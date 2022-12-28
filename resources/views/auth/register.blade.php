@@ -41,9 +41,8 @@
 		<div class='mt-4'>
 			<x-input-label for="role" :value="__('Role')" />
 
-			<select for="role" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full">
-				<option value="admin">Admin</option>
-				<option value="announcer">Announcer</option>
+			<select name='role' for="role" id='role' class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full">
+				<option value="admin" selected>Admin</option>
 				<option value="member">Member</option>
 			</select>
 
