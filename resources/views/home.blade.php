@@ -1,29 +1,19 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@extends('layouts.main')
 
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+@section('content')
 
-	<title>Laravel</title>
+@if ($role == 'admin')
+<div class='flex justify-center gap-3'>
+	<a href="{{route('organisations.index')}}">
+		<button class='bg-blue-500 text-white px-4 py-2 rounded-md text-lg'>View All Organisation</button>
+	</a>
 
-	<!-- Fonts -->
-	<link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+	<a href="{{route('organisations.create')}}">
+		<button class='bg-blue-500 text-white px-4 py-2 rounded-md text-lg'>Create Organisation</button>
+	</a>
 
-	@vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
+	<button class='bg-blue-500 text-white px-4 py-2 rounded-md text-lg' disabled>Create Post</button>
+</div>
+@endif
 
-<body class="antialiased">
-	@include('layouts.navbar')
-	<main class='max-w-[60rem] mx-auto m-5'>
-		@if ($role == 'admin')
-		<div class='flex justify-center'>
-			<button class='bg-blue-500 text-white px-4 py-2 rounded-md text-lg'>Create Organisation</button>
-		</div>
-		@endif
-	</main>
-
-
-</body>
-
-</html>
+@endsection

@@ -1,6 +1,8 @@
 <div class="bg-gray-800 text-white p-5">
 	<div class="flex justify-between items-center px-10 mx-auto">
-		<div class='font-bold text-lg'>Announcement Board App</div>
+		<a href="{{route('home')}}">
+			<div class='font-bold text-lg'>Announcement Board App</div>
+		</a>
 		<div class="flex items-center gap-5">
 			@if (isset($name))
 			<div><span>Logged in as:</span> {{$name}}
