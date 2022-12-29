@@ -25,8 +25,10 @@ Route::middleware('auth')->group(function () {
 	Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 	Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+	Route::post('/organisations', [OrganisationController::class, 'store'])->middleware(['auth'])->name('organisations.store');
 	Route::get('/organisations', [OrganisationController::class, 'index'])->name('organisations.index');
 	Route::get('/organisations/create', [OrganisationController::class, 'create'])->name('organisations.create');
+	Route::get('/organisation/users', [OrganisationController::class, 'users'])->name('organisation.users');
 });
 
 
