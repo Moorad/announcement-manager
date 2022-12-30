@@ -2,24 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\UserOrganisation;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
 	//
 	public function search(Request $request)
 	{
+		$term = $request->search;
+		$users = DB::table('users')->leftJoin('user_organisations', 'user_organisations.user_id', '=', 'users.id')->select('users.*', 'user_organisations.org_id')->where(function ($query) {
+			global $request;
+			$query->where('org_id', $request->org_id)->orWhere('org_id', null);
+		})->whereNot('users.role', 'admin');
 
-		$query = $request->search;
-		if ($query == null) {
-			$users = User::all();
+		if ($term == null) {
+			$users = $users->get();
 		} else {
-			$users = User::where('name', 'LIKE', '%' . $query . '%')->get();
+			$users = $users->where('name', 'LIKE', '%' . $term . '%')->get();
 		}
-
 
 		return view('layouts.member_table', ['users' => $users]);
 	}

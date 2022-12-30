@@ -49,13 +49,16 @@
 </div>
 
 <script>
+	const orgId = '<?php echo $org_data->id ?>'
 
 	function searchUsers(element) {
 		const searchInputBox = document.querySelector('#search');
 		const memberTable = document.querySelector('#member-table');
 		const searchForm = document.querySelector('#search-form');
 
-		const data = new URLSearchParams(new FormData(searchForm));
+		const form = new FormData(searchForm);
+		form.append('org_id', orgId);
+		const data = new URLSearchParams(form);
 		fetch('<?php echo route("user.search") ?>', {
 			method: 'POST',
 			body: data
@@ -73,7 +76,6 @@
 		const memberCountBot = document.querySelector('#member_count_bottom');
 		const memberCountTop = document.querySelector('#member_count_top');
 		const userId = element.parentElement.parentElement.firstElementChild.innerText
-		const orgId = '<?php echo $org_data->id ?>'
 
 		if (isMemberChecked) {
 
