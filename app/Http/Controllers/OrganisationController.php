@@ -25,8 +25,7 @@ class OrganisationController extends Controller
 			return redirect()->to(route('organisations.users'));
 		}
 
-		$users = User::all();
-		return view('organisations.create', ['users' => $users, 'name' => Auth::user()->name, 'role' => Auth::user()->role]);
+		return view('organisations.create', ['name' => Auth::user()->name, 'role' => Auth::user()->role]);
 	}
 
 	public function store(Request $request)
@@ -44,8 +43,9 @@ class OrganisationController extends Controller
 
 	public function users(Request $request)
 	{
-		// $admin_id = Auth::user()->id;
-		// $org = Organisation::where();
-		return view('organisations.users', ['name' => Auth::user()->name, 'role' => Auth::user()->role, 'org_data' => $request->attributes->get('org_data')]);
+		$users = User::all();
+
+		// dd($users);
+		return view('organisations.users', ['name' => Auth::user()->name, 'role' => Auth::user()->role, 'org_data' => $request->attributes->get('org_data'), 'users' => $users]);
 	}
 }
