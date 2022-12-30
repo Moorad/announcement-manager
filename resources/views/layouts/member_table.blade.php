@@ -21,7 +21,6 @@
 				<input type="checkbox" name="" id={{"member-select-" . $index}} onchange="updateMember(this)" >
 				@else
 				<input type="checkbox" name="" id={{"member-select-" . $index}} onchange="updateMember(this)" checked>
-				<?php $member_count += 1 ?>
 			@endif
 		</td>
 		<td>

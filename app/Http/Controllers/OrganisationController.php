@@ -42,6 +42,10 @@ class OrganisationController extends Controller
 
 	public function users(Request $request)
 	{
+		if ($request->attributes->get('has_org') == null) {
+			return redirect()->to(route('home'));
+		}
+
 		$org_id = $request->attributes->get('org_data')->id;
 
 		$users = DB::table('users')->leftJoin('user_organisations', 'user_organisations.user_id', '=', 'users.id')->select('users.*', 'user_organisations.org_id')->where('org_id', $org_id)->orWhereNull('org_id')->where('users.role', '!=', 'admin')->get();

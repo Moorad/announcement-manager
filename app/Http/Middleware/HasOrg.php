@@ -18,10 +18,15 @@ class HasOrg
 	 */
 	public function handle(Request $request, Closure $next)
 	{
-		$organisation = Organisation::where('admin_id', '=', Auth::user()->id)->get();
+		$organisation = Organisation::where('admin_id', '=', Auth::user()->id)->first();
 
+		if ($organisation == null) {
+			$request->attributes->add(['has_org' => false, 'org_data' => null]); #
 
-		$request->attributes->add(['has_org' => count($organisation) > 0, 'org_data' => $organisation->first()]);
+			return $next($request);
+		}
+
+		$request->attributes->add(['has_org' => true, 'org_data' => $organisation]);
 
 		return $next($request);
 	}
