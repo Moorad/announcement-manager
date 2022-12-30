@@ -24,7 +24,18 @@
 			@endif
 		</td>
 		<td>
-			<input type="checkbox" name="" id={{"announcer-select-" . $index}} onchange="updateAnnouncer(this)" disabled>
+			@if ($user->role == 'announcer')
+			<input type="checkbox" name="" id={{"announcer-select-" . $index}} onchange="updateAnnouncer(this)" checked>
+			@else
+				@if ($user->org_id == null)
+				<input type="checkbox" name="" id={{"announcer-select-" . $index}} onchange="updateAnnouncer(this)" disabled>
+
+				@else
+				<input type="checkbox" name="" id={{"announcer-select-" . $index}} onchange="updateAnnouncer(this)">
+
+				@endif
+			@endif	
+			
 		</td>
 	</tr>
 	@endforeach

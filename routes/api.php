@@ -22,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/user/search', [UserController::class, 'search'])->name('user.search');
 Route::post('/user/update_member', [UserController::class, 'update_member'])->name('user.update_member');
+Route::post('/user/update_announcer', [UserController::class, 'update_announcer'])->name('user.update_announcer');

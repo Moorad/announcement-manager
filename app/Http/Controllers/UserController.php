@@ -45,4 +45,19 @@ class UserController extends Controller
 			return 'Member ID ' . $user_id . ' has been removed from the organisation';
 		}
 	}
+
+	public function update_announcer(Request $request)
+	{
+		$user_id = $request->user_id;
+
+		$user = DB::table('users')->where('id', $user_id)->first();
+
+		if ($user->role == 'member') {
+			DB::table('users')->where('id', $user_id)->update(['role' => 'announcer']);
+			return 'Member ID ' . $user_id . ' has been promoted to an announcer';
+		} else {
+			DB::table('users')->where('id', $user_id)->update(['role' => 'member']);
+			return 'Member ID ' . $user_id . ' has been demoted to a member';
+		}
+	}
 }

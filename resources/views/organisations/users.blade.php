@@ -50,6 +50,8 @@
 
 <script>
 	const orgId = '<?php echo $org_data->id ?>'
+	const memberCountBot = document.querySelector('#member_count_bottom');
+		const memberCountTop = document.querySelector('#member_count_top');
 
 	function searchUsers(element) {
 		const searchInputBox = document.querySelector('#search');
@@ -69,12 +71,8 @@
 	}
 
 	function updateMember(element) {
-		console.log('Updated member')
-
 		const isMemberChecked = element.checked;
 		const announcerCheckbox = element.parentElement.nextElementSibling.firstElementChild;
-		const memberCountBot = document.querySelector('#member_count_bottom');
-		const memberCountTop = document.querySelector('#member_count_top');
 		const userId = element.parentElement.parentElement.firstElementChild.innerText
 
 		if (isMemberChecked) {
@@ -95,6 +93,16 @@
 
 	function updateAnnouncer(element) {
 		console.log('Updated announcer');
+		const isMemberChecked = element.checked;
+		const userId = element.parentElement.parentElement.firstElementChild.innerText
+
+		if (isMemberChecked) {
+
+			console.log(orgId, userId);
+			fetchUpdateAnnouncer(userId, orgId);
+		} else {
+			fetchUpdateAnnouncer(userId, orgId);
+		}
 	}
 
 	function fetchUpdateMember(userId, orgId) {
@@ -103,6 +111,20 @@
 			form.append('org_id', orgId);
 			const data = new URLSearchParams(form);
 		fetch('<?php echo route("user.update_member") ?>', {
+			method: 'POST',
+			body: data
+		}).then(res => res.text())
+		.then(res => {
+			document.querySelector('#feedback').innerText = res;
+		})
+	}
+
+	function fetchUpdateAnnouncer(userId, orgId) {
+		const form = new FormData();
+			form.append('user_id', userId);
+			form.append('org_id', orgId);
+			const data = new URLSearchParams(form);
+		fetch('<?php echo route("user.update_announcer") ?>', {
 			method: 'POST',
 			body: data
 		}).then(res => res.text())
