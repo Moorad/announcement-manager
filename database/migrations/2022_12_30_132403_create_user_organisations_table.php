@@ -17,7 +17,6 @@ return new class extends Migration
 			$table->primary(['user_id', 'org_id']);
 			$table->bigInteger('user_id')->unsigned();
 			$table->bigInteger('org_id')->unsigned();
-			$table->enum('role', ["member", "announcer"])->default('member');
 			$table->timestamps();
 
 			$table->foreign('user_id')->references('id')->on('users')
