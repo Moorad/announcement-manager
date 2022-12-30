@@ -42,9 +42,11 @@ class OrganisationController extends Controller
 
 	public function users(Request $request)
 	{
-		$users = DB::table('users')->leftJoin('user_organisations', 'user_organisations.user_id', '=', 'users.id')->select('users.*', 'user_organisations.org_id')->get();
+		$org_id = $request->attributes->get('org_data')->id;
 
-		$memberCount = count(UserOrganisation::where('org_id', $request->attributes->get('org_data')->id)->get());
+		$users = DB::table('users')->leftJoin('user_organisations', 'user_organisations.user_id', '=', 'users.id')->select('users.*', 'user_organisations.org_id')->where('org_id', $org_id)->orWhereNull('org_id')->where('users.role', '!=', 'admin')->get();
+
+		$memberCount = count(UserOrganisation::where('org_id', $org_id)->get());
 
 		return view('organisations.users', ['name' => Auth::user()->name, 'role' => Auth::user()->role, 'org_data' => $request->attributes->get('org_data'), 'users' => $users, 'member_count' => $memberCount]);
 	}
