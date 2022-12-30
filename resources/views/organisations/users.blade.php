@@ -1,7 +1,13 @@
 @extends('layouts.main')
 
 @section('content')
-<div>
+<div class='text-xl font-bold'>Organisation Name:</div>
+<div class='font-medium'>{{$org_data->name}}</div>
+
+<div class='text-xl font-bold'>Number of members: </div>
+<div>0</div>
+
+{{-- <div>
 	<form action="" class="flex flex-col gap-10">
 
 		<div>
@@ -77,6 +83,6 @@
 			}
 			
 		}
-	</script>
+	</script> --}}
 	
 	@endsection

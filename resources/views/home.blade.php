@@ -8,9 +8,15 @@
 		<button class='bg-blue-500 text-white px-4 py-2 rounded-md text-lg'>View All Organisation</button>
 	</a>
 
+	@if ($has_org == True)
+	<a href="{{route('organisations.users')}}">
+		<button class='bg-blue-500 text-white px-4 py-2 rounded-md text-lg'>Manage Organisation Users</button>
+	</a>
+	@else
 	<a href="{{route('organisations.create')}}">
 		<button class='bg-blue-500 text-white px-4 py-2 rounded-md text-lg'>Create Organisation</button>
 	</a>
+	@endif
 
 	<button class='bg-blue-500 text-white px-4 py-2 rounded-md text-lg' disabled>Create Post</button>
 </div>

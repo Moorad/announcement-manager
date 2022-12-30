@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-	return view('home', ['name' => Auth::user()->name, 'role' => Auth::user()->role]);
-})->middleware(['auth', 'verified'])->name('home');
+	return view('home', ['name' => Auth::user()->name, 'role' => Auth::user()->role, "has_org" => request()->get('has_org')]);
+})->middleware(['auth', 'verified', 'has_org'])->name('home');
 
 Route::middleware('auth')->group(function () {
 	Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -27,8 +27,8 @@ Route::middleware('auth')->group(function () {
 
 	Route::post('/organisations', [OrganisationController::class, 'store'])->middleware(['auth'])->name('organisations.store');
 	Route::get('/organisations', [OrganisationController::class, 'index'])->name('organisations.index');
-	Route::get('/organisations/create', [OrganisationController::class, 'create'])->name('organisations.create');
-	Route::get('/organisation/users', [OrganisationController::class, 'users'])->name('organisation.users');
+	Route::get('/organisations/create', [OrganisationController::class, 'create'])->middleware(['has_org'])->name('organisations.create');
+	Route::get('/organisations/users', [OrganisationController::class, 'users'])->middleware(['has_org'])->name('organisations.users');
 });
 
 

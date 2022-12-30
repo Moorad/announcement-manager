@@ -18,8 +18,13 @@ class OrganisationController extends Controller
 		return view('organisations.index', ['organisations' => $organisations, 'name' => Auth::user()->name, 'role' => Auth::user()->role]);
 	}
 
-	public function create()
+	public function create(Request $request)
 	{
+
+		if ($request->attributes->get('has_org') == True) {
+			return redirect()->to(route('organisations.users'));
+		}
+
 		$users = User::all();
 		return view('organisations.create', ['users' => $users, 'name' => Auth::user()->name, 'role' => Auth::user()->role]);
 	}
@@ -37,11 +42,10 @@ class OrganisationController extends Controller
 		return redirect()->to(route('organisation.users'));
 	}
 
-	public function users()
+	public function users(Request $request)
 	{
 		// $admin_id = Auth::user()->id;
 		// $org = Organisation::where();
-		// dd($org);
-		return 'A';
+		return view('organisations.users', ['name' => Auth::user()->name, 'role' => Auth::user()->role, 'org_data' => $request->attributes->get('org_data')]);
 	}
 }
