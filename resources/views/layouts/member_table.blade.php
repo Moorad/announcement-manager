@@ -17,7 +17,12 @@
 		<td>{{$user->email}}</td>
 		<td>{{$user->role}}</td>
 		<td>
-			<input type="checkbox" name="" id={{"member-select-" . $index}} onchange="updateMember(this)">
+			@if ($user->org_id == null)
+				<input type="checkbox" name="" id={{"member-select-" . $index}} onchange="updateMember(this)" >
+				@else
+				<input type="checkbox" name="" id={{"member-select-" . $index}} onchange="updateMember(this)" checked>
+				<?php $member_count += 1 ?>
+			@endif
 		</td>
 		<td>
 			<input type="checkbox" name="" id={{"announcer-select-" . $index}} onchange="updateAnnouncer(this)" disabled>

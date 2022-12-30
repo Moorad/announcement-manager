@@ -18,7 +18,7 @@
 	</a>
 	@endif
 
-	<button class='bg-blue-500 text-white px-4 py-2 rounded-md text-lg' disabled>Create Post</button>
+	<button class='bg-blue-500 text-white px-4 py-2 rounded-md text-lg' title="You must create an organisation first." disabled>Create Post</button>
 </div>
 @endif
 

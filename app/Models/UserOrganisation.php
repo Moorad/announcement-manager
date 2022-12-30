@@ -5,12 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Organisation extends Model
+class UserOrganisation extends Model
 {
 	use HasFactory;
-
-	public function user()
-	{
-		return $this->belongsToMany(User::class);
-	}
 }

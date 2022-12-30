@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Organisation;
-use App\Models\User;
-use App\Providers\RouteServiceProvider;
+use App\Models\UserOrganisation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -38,14 +37,15 @@ class OrganisationController extends Controller
 		$org->admin_id = $creator_id;
 		$org->save();
 
-		return redirect()->to(route('organisation.users'));
+		return redirect()->to(route('organisations.users'));
 	}
 
 	public function users(Request $request)
 	{
-		$users = User::all();
+		$users = DB::table('users')->leftJoin('user_organisations', 'user_organisations.user_id', '=', 'users.id')->select('users.*', 'user_organisations.org_id')->get();
 
-		// dd($users);
-		return view('organisations.users', ['name' => Auth::user()->name, 'role' => Auth::user()->role, 'org_data' => $request->attributes->get('org_data'), 'users' => $users]);
+		$memberCount = count(UserOrganisation::where('org_id', $request->attributes->get('org_data')->id)->get());
+
+		return view('organisations.users', ['name' => Auth::user()->name, 'role' => Auth::user()->role, 'org_data' => $request->attributes->get('org_data'), 'users' => $users, 'member_count' => $memberCount]);
 	}
 }

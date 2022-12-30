@@ -9,7 +9,7 @@
 	
 	<div>
 		<div class='text-sm '>Number of members: </div>
-		<div class='text-2xl font-bold' >0 members</div>
+		<div class='text-2xl font-bold'><span id='member_count_top'>{{$member_count}}</span> members</div>
 	</div>
 
 	<div>
@@ -37,9 +37,11 @@
 		<div>
 				@include('layouts.member_table')
 			</div>
+			<div id='feedback' class='text-center'></div>
 
-			<div>Number of people selected: <span id='members_selected'>0</span></div>
+			<div>Number of people selected: <span id='member_count_bottom'>{{$member_count}}</span></div>
 			
+
 			<div>
 				<button>Back</button>
 			</div>
@@ -47,21 +49,6 @@
 </div>
 
 <script>
-	function enableAnnouncer(element) {
-		const isMemberChecked = element.checked;
-		const announcerCheckbox = element.parentElement.nextElementSibling.firstElementChild;
-		const members_selected = document.querySelector('#members_selected');
-
-		if (isMemberChecked) {
-			announcerCheckbox.disabled = false;
-			members_selected.innerText = Number(members_selected.innerText) + 1;
-		} else {
-			announcerCheckbox.disabled = true;
-			announcerCheckbox.checked = false;
-			members_selected.innerText = Number(members_selected.innerText) - 1;
-		}
-		
-	}
 
 	function searchUsers(element) {
 		const searchInputBox = document.querySelector('#search');
@@ -79,12 +66,47 @@
 	}
 
 	function updateMember(element) {
-		enableAnnouncer(element);
 		console.log('Updated member')
+
+		const isMemberChecked = element.checked;
+		const announcerCheckbox = element.parentElement.nextElementSibling.firstElementChild;
+		const memberCountBot = document.querySelector('#member_count_bottom');
+		const memberCountTop = document.querySelector('#member_count_top');
+		const userId = element.parentElement.parentElement.firstElementChild.innerText
+		const orgId = '<?php echo $org_data->id ?>'
+
+		if (isMemberChecked) {
+
+			console.log(orgId, userId);
+			fetchUpdateMember(userId, orgId);
+			announcerCheckbox.disabled = false;
+			memberCountBot.innerText = Number(memberCountBot.innerText) + 1;
+			memberCountTop.innerText = Number(memberCountTop.innerText) + 1
+		} else {
+			fetchUpdateMember(userId, orgId);
+			announcerCheckbox.disabled = true;
+			announcerCheckbox.checked = false;
+			memberCountBot.innerText = Number(memberCountBot.innerText) - 1;
+			memberCountTop.innerText = Number(memberCountTop.innerText) - 1
+		}
 	}
 
 	function updateAnnouncer(element) {
 		console.log('Updated announcer');
+	}
+
+	function fetchUpdateMember(userId, orgId) {
+		const form = new FormData();
+			form.append('user_id', userId);
+			form.append('org_id', orgId);
+			const data = new URLSearchParams(form);
+		fetch('<?php echo route("user.update_member") ?>', {
+			method: 'POST',
+			body: data
+		}).then(res => res.text())
+		.then(res => {
+			document.querySelector('#feedback').innerText = res;
+		})
 	}
 </script>
 	
