@@ -18,9 +18,9 @@
 			</div>
 			<div class="flex bg-gray-200 px-5 pt-2 pb-2 rounded-md gap-5">
 				<div>
-					<button>Upvote</button>
-				<button>Downvote</button>
-				<span>0</span>
+					<button onclick="upVote({{$announcement->id}}, this)">Upvote</button>
+					<button onclick="downVote({{$announcement->id}}, this)">Downvote</button>
+				<span id='vote_value'>{{$announcement->vote_sum}}</span>
 				</div>
 				<div>
 					<button>Comments</button>
@@ -29,4 +29,33 @@
 			</div>
 		</div>
 	@endforeach
+	<div id='test'></div>
+	<script>
+
+		function upVote(id, element) {
+			fetchVote(id, 1, element)
+		}
+
+		function downVote(id, element) {
+			fetchVote(id, -1, element);
+		}
+
+		function fetchVote(id, vote, element) {
+			const form = new FormData();
+			form.append('announcement_id', id);
+			form.append('vote_val', vote);
+			form.append('user_id', '<?php echo $user_id ?>')
+
+			const data = new URLSearchParams(form);
+			
+			fetch("<?php echo route('announcements.vote') ?>", {
+				method: 'POST',
+				body: data,
+			}).then(res => res.text())
+			.then((res) => {
+				element.parentElement.lastElementChild.innerText = res;
+			});
+		}
+
+	</script>
 </div>

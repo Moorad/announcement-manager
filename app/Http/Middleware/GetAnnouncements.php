@@ -17,7 +17,17 @@ class GetAnnouncements
 	 */
 	public function handle(Request $request, Closure $next)
 	{
-		$announcements = DB::table('announcements')->join('users', 'announcements.user_id', '=', 'users.id')->select('announcements.*', 'users.name as user_name', 'users.role as user_role')->where('org_id', $request->attributes->get('org_data')->id)->get();
+		if ($request->attributes->get('in_org') == null && $request->attributes->get('owns_org') == null) {
+			$request->attributes->add(['announcements' => []]);
+			return $next($request);
+		}
+
+		$announcementVotes = DB::table('announcement_votes')->selectRaw('announcement_id, SUM(vote_val) as vote_sum')->groupBy('announcement_id');
+
+		$announcements = DB::table('announcements')->join('users', 'announcements.user_id', '=', 'users.id')->joinSub($announcementVotes, 'announcement_votes', function ($join) {
+			$join->on('announcement_votes.announcement_id', '=', 'announcements.id');
+		})->select('announcements.*', 'users.name as user_name', 'users.role as user_role', 'announcement_votes.vote_sum')->where('org_id', $request->attributes->get('org_data')->id)->get();
+
 		$request->attributes->add(['announcements' => $announcements]);
 		return $next($request);
 	}
