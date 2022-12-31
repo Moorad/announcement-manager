@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\OrganisationController;
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,8 @@ Route::middleware(['auth', 'has_org'])->group(function () {
 	Route::get('/organisations', [OrganisationController::class, 'index'])->name('organisations.index');
 	Route::get('/organisations/create', [OrganisationController::class, 'create'])->middleware(['has_org'])->name('organisations.create');
 	Route::get('/organisations/users', [OrganisationController::class, 'users'])->middleware(['has_org'])->name('organisations.users');
+
+	Route::get('/announcements/create', [AnnouncementController::class, 'create'])->name('announcements.create');
 });
 
 

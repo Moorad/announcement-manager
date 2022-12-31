@@ -17,23 +17,4 @@
 		</div>
 		</form>
 	</div>
-
-	<script>
-		function enableAnnouncer(element) {
-			const isMemberChecked = element.checked;
-			const announcerCheckbox = element.parentElement.nextElementSibling.firstElementChild;
-			const members_selected = document.querySelector('#members_selected');
-
-			if (isMemberChecked) {
-				announcerCheckbox.disabled = false;
-				members_selected.innerText = Number(members_selected.innerText) + 1;
-			} else {
-				announcerCheckbox.disabled = true;
-				announcerCheckbox.checked = false;
-				members_selected.innerText = Number(members_selected.innerText) - 1;
-			}
-			
-		}
-	</script>
-	
-	@endsection
+@endsection
