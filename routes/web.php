@@ -33,6 +33,8 @@ Route::middleware(['auth', 'has_org'])->group(function () {
 
 	Route::get('/announcements/create', [AnnouncementController::class, 'create'])->name('announcements.create');
 	Route::post('/announcements', [AnnouncementController::class, 'store'])->name('announcements.store');
+
+	Route::get('/announcements/image/{id}', [AnnouncementController::class, 'image'])->name('announcements.image');
 });
 
 

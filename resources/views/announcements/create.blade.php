@@ -2,7 +2,7 @@
 
 @section('content')
 
-<form method="POST" action="{{route('announcements.store')}}" class="flex flex-col gap-10">
+<form method="POST" action="{{route('announcements.store')}}" class="flex flex-col gap-10" enctype="multipart/form-data">
 	@csrf
 	
 	@method('POST')

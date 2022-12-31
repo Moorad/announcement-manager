@@ -23,6 +23,17 @@ class AnnouncementController extends Controller
 		$post->org_id = $request->attributes->get('org_data')->id;
 		$post->title = $request->announcement_title;
 		$post->text = $request->announcement_text;
+
+		if ($request->hasFile('announcement_image')) {
+			$request->validate([
+				'image' => 'mimes:png,jpeg,jpg,svg,webp'
+			]);
+
+			$request->file('announcement_image')->store('announcement_images', 'public');
+
+			$post->attached_image = $request->file('announcement_image')->hashName();
+		}
+
 		$post->save();
 
 		return redirect()->to(route('home'));

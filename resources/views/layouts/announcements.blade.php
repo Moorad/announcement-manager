@@ -8,7 +8,13 @@
 				</div>
 				<div class='text-2xl font-bold'>{{$announcement->title}}</div>
 				<div>{{$announcement->text}}</div>
-				<div>Image here</div>
+				
+				@if ($announcement->attached_image)
+				<div>
+					<img src="{{asset('storage/announcement_images/'.$announcement->attached_image)}}" alt="" class='rounded-lg mx-auto w-3/4 my-4'>
+				</div>
+				@endif
+
 			</div>
 			<div class="flex bg-gray-200 px-5 pt-2 pb-2 rounded-md gap-5">
 				<div>
