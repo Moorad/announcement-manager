@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-	return view('home', ['name' => Auth::user()->name, 'role' => Auth::user()->role, "owns_org" => request()->get('owns_org'), "in_org" => request()->get('in_org'), 'org_data' => request()->get('org_data')]);
-})->middleware(['auth', 'verified', 'has_org'])->name('home');
+	return view('home', ['name' => Auth::user()->name, 'role' => Auth::user()->role, "owns_org" => request()->get('owns_org'), "in_org" => request()->get('in_org'), 'org_data' => request()->get('org_data'), 'announcements' => request()->get('announcements')]);
+})->middleware(['auth', 'verified', 'has_org', 'get_announcements'])->name('home');
 
 Route::middleware(['auth', 'has_org'])->group(function () {
 	Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -32,6 +32,7 @@ Route::middleware(['auth', 'has_org'])->group(function () {
 	Route::get('/organisations/users', [OrganisationController::class, 'users'])->middleware(['has_org'])->name('organisations.users');
 
 	Route::get('/announcements/create', [AnnouncementController::class, 'create'])->name('announcements.create');
+	Route::post('/announcements', [AnnouncementController::class, 'store'])->name('announcements.store');
 });
 
 
