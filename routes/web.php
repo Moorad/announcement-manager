@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-	return view('home', ['name' => Auth::user()->name, 'role' => Auth::user()->role, "has_org" => request()->get('has_org')]);
+	return view('home', ['name' => Auth::user()->name, 'role' => Auth::user()->role, "owns_org" => request()->get('owns_org'), "in_org" => request()->get('in_org'), 'org_data' => request()->get('org_data')]);
 })->middleware(['auth', 'verified', 'has_org'])->name('home');
 
 Route::middleware(['auth', 'has_org'])->group(function () {

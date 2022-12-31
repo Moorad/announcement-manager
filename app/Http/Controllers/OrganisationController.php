@@ -20,7 +20,7 @@ class OrganisationController extends Controller
 	public function create(Request $request)
 	{
 
-		if ($request->attributes->get('has_org') == True) {
+		if ($request->attributes->get('owns_org') == True) {
 			return redirect()->to(route('organisations.users'));
 		}
 
@@ -42,7 +42,7 @@ class OrganisationController extends Controller
 
 	public function users(Request $request)
 	{
-		if ($request->attributes->get('has_org') == null) {
+		if ($request->attributes->get('owns_org') == null) {
 			return redirect()->to(route('home'));
 		}
 
