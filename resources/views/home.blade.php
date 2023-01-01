@@ -37,6 +37,6 @@
 <div class='text-center mt-4 text-gray-400'>You are not part of an organisation, please contact an admin to invite you to an organisation</div>
 @endif
 
-@include('layouts.announcements')
+@include('layouts.announcements', ['empty_message'=>'No announcements shared in this organisation yet. Check back later'])
 
 @endsection
