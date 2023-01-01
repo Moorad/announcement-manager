@@ -24,7 +24,7 @@ class GetAnnouncements
 
 		$announcementVotes = DB::table('announcement_votes')->selectRaw('announcement_id, SUM(vote_val) as vote_sum')->groupBy('announcement_id');
 
-		$announcements = DB::table('announcements')->join('users', 'announcements.user_id', '=', 'users.id')->joinSub($announcementVotes, 'announcement_votes', function ($join) {
+		$announcements = DB::table('announcements')->join('users', 'announcements.user_id', '=', 'users.id')->leftJoinSub($announcementVotes, 'announcement_votes', function ($join) {
 			$join->on('announcement_votes.announcement_id', '=', 'announcements.id');
 		})->select('announcements.*', 'users.name as user_name', 'users.role as user_role', 'announcement_votes.vote_sum')->where('org_id', $request->attributes->get('org_data')->id)->get();
 

@@ -7,7 +7,7 @@
 		<div class='bg-gray-100 w-full max-w-[40rem] rounded-md'>
 				<div class='px-5 py-3'>
 					<div class='mb-3'>
-						<a href="{{route('profile.show', $user_id)}}">
+						<a href="{{route('profile.show', $announcement->user_id)}}">
 							<div class='font-bold'>{{$announcement->user_name}} <span class='bg-blue-500 text-white px-2 rounded-full text-sm'>{{$announcement->user_role}}</span></div>
 						</a>
 						<div class='text-sm text-gray-400'>{{$announcement->updated_at}}</div>
