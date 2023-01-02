@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Announcement;
 use App\Models\AnnouncementVote;
+use App\Models\Comment;
 use App\Models\Organisation;
 use App\Models\User;
 use App\Models\UserOrganisation;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class ProfileController extends Controller
 {
-	public function show($id, Request $request)
+	public function show($id)
 	{
 		$user = User::where('id', $id)->first();
 
@@ -33,6 +34,11 @@ class ProfileController extends Controller
 			->select('announcements.*', 'users.name as user_name', 'users.role as user_role', 'announcement_votes.vote_sum')
 			->where('announcements.user_id', $id)->get();
 
+		$comments = Comment::where('comments.user_id', $user->id)
+			->join('users', 'users.id', 'comments.user_id')
+			->join('announcements', 'announcements.id', 'comments.announcement_id')
+			->select('comments.*', 'users.name as user_name', 'users.role as user_role', 'announcements.title as announcement_title')->get();
+
 		$in_org = UserOrganisation::where('user_id', $id)->first();
 		$owns_org = Organisation::where('admin_id', $id)->first();
 
@@ -45,7 +51,7 @@ class ProfileController extends Controller
 		}
 
 		return view('profile.show', [
-			'user' => $user, 'in_org' => $in_org != null, 'owns_org' => $owns_org != null, 'org_data' => $org_data, 'announcements' => $announcements
+			'user' => $user, 'in_org' => $in_org != null, 'owns_org' => $owns_org != null, 'org_data' => $org_data, 'announcements' => $announcements, 'comments' => $comments
 		]);
 	}
 

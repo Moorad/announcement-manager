@@ -34,7 +34,7 @@
                 <a href="{{ route('announcements.show', $announcement->id) }}">
                     <div>
                         <button>Comments</button>
-                        <span>{{ $announcement->comment_count }}</span>
+                        <span>{{ $announcement->comment_count ?: 0 }}</span>
                     </div>
                 </a>
             </div>
