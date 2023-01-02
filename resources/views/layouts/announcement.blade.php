@@ -24,7 +24,7 @@
 		</div>
 			<div>
 				<button>Comments</button>
-				<span>0</span>
+				<span>{{count($comments)}}</span>
 			</div>
 	</div>
 </div>
