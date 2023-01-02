@@ -5,11 +5,13 @@
         </a>
         <div class="flex items-center gap-5">
             @if (isset($user->name))
-                <div><span>Logged in as:</span> {{ $user->name }}
-                    @if (isset($user->role))
-                        <span class='bg-blue-500 px-2 rounded-full'>{{ $user->role }}</span>
-                    @endif
-                </div>
+                <a href="{{ route('profile.show', $user->id) }}">
+                    <div>{{ $user->name }}
+                        @if (isset($user->role))
+                            <span class='bg-blue-500 px-2 rounded-full'>{{ $user->role }}</span>
+                        @endif
+                    </div>
+                </a>
             @endif
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

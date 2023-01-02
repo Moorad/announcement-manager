@@ -20,6 +20,7 @@ return new class extends Migration
 			$table->string('title');
 			$table->string('text');
 			$table->string('attached_image')->nullable();
+			$table->bigInteger('last_edited_by')->unsigned()->nullable();
 			$table->timestamps();
 
 			$table->foreign('user_id')->references('id')->on('users')
@@ -27,6 +28,9 @@ return new class extends Migration
 
 			$table->foreign('org_id')->references('id')->on('organisations')
 				->onDelete('cascade')->onUpdate('cascade');
+
+			$table->foreign('last_edited_by')->references('id')->on('users')
+				->onDelete('set null')->onUpdate('cascade');
 		});
 	}
 

@@ -32,7 +32,7 @@ class AnnouncementController extends Controller
 	 */
 	public function create()
 	{
-		return view('announcements.create');
+		return view('announcements.create', ['user' => Auth::user()]);
 	}
 
 	/**
@@ -100,7 +100,7 @@ class AnnouncementController extends Controller
 	 */
 	public function edit($id)
 	{
-		//
+		return view('announcements.edit', ['user' => Auth::user()]);
 	}
 
 	/**
