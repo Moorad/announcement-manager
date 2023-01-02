@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Announcement;
 use App\Models\AnnouncementVote;
 use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,11 +44,11 @@ class AnnouncementController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		$post = new Announcement;
-		$post->user_id = Auth::user()->id;
-		$post->org_id = $request->attributes->get('org_data')->id;
-		$post->title = $request->announcement_title;
-		$post->text = $request->announcement_text;
+		$announcement = new Announcement;
+		$announcement->user_id = Auth::user()->id;
+		$announcement->org_id = $request->attributes->get('org_data')->id;
+		$announcement->title = $request->announcement_title;
+		$announcement->text = $request->announcement_text;
 
 		if ($request->hasFile('announcement_image')) {
 			$request->validate([
@@ -56,12 +57,12 @@ class AnnouncementController extends Controller
 
 			$request->file('announcement_image')->store('announcement_images', 'public');
 
-			$post->attached_image = $request->file('announcement_image')->hashName();
+			$announcement->attached_image = $request->file('announcement_image')->hashName();
 		}
 
-		$post->save();
+		$announcement->save();
 
-		return redirect()->to(route('home'));
+		return redirect()->to(route('announcements.show', $announcement->id));
 	}
 
 	/**
@@ -100,7 +101,14 @@ class AnnouncementController extends Controller
 	 */
 	public function edit($id)
 	{
-		return view('announcements.edit', ['user' => Auth::user()]);
+		$user = User::where('id', Auth::user()->id)->first();
+		$announcement = Announcement::where('id', $id)->first();
+
+		if ($user->id != $announcement->user_id && $user->role != 'admin') {
+			return redirect()->to(route('home'));
+		}
+
+		return view('announcements.edit', ['user' => Auth::user(), 'announcement' => $announcement]);
 	}
 
 	/**
@@ -112,7 +120,16 @@ class AnnouncementController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
-		//
+		$user = User::where('id', Auth::user()->id)->first();
+		$announcement = Announcement::where('id', $id);
+
+		if ($user->id != $announcement->first()->user_id && $user->role != 'admin') {
+			return redirect()->to(route('home'));
+		}
+
+		$announcement->update(['title' => $request->announcement_title, 'text' => $request->announcement_text, 'edited' => true]);
+
+		return redirect()->to(route('announcements.show', $announcement->first()->id));
 	}
 
 	/**

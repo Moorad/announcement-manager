@@ -18,6 +18,10 @@
             </div>
         @endif
 
+        @if ($announcement->edited)
+            <div class="text-sm text-gray-400 mt-5">Edited on
+                {{ $announcement->updated_at }}</div>
+        @endif
     </div>
     <div class="flex bg-gray-200 px-5 pt-2 pb-2 rounded-md justify-between">
         <div class="flex gap-5">
@@ -30,9 +34,9 @@
                 <a href="{{ route('announcements.show', $announcement->id) }}">
                     <button>Comments</button>
                     @isset($comments)
-                        <span>{{ count($comments) }}</span>
+                        <span>{{ count($comments) ?: 0 }}</span>
                     @else
-                        <span>{{ $announcement->comment_count }}</span>
+                        <span>{{ $announcement->comment_count ?: 0 }}</span>
                     @endisset
                 </a>
             </div>
