@@ -2,25 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\UserOrganisation;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-	//
+
 	public function search(Request $request)
 	{
-		$term = $request->search;
-		$users = DB::table('users')->leftJoin('user_organisations', 'user_organisations.user_id', '=', 'users.id')->select('users.*', 'user_organisations.org_id')->where(function ($query) {
-			global $request;
-			$query->where('org_id', $request->org_id)->orWhere('org_id', null);
-		})->whereNot('users.role', 'admin');
+		$inner = function ($query) use ($request) {
+			$query->where('org_id',  $request->org_id)
+				->orWhere('org_id', null);
+		};
 
-		if ($term == null) {
+		$users = User::leftJoin('user_organisations', 'user_organisations.user_id', '=', 'users.id')
+			->select('users.*', 'user_organisations.org_id')
+			->where($inner)
+			->whereNot('users.role', 'admin');
+
+		if ($request->search == null) {
 			$users = $users->get();
 		} else {
-			$users = $users->where('name', 'LIKE', '%' . $term . '%')->get();
+			$users = $users->where('name', 'LIKE', '%' . $request->search . '%')->get();
 		}
 
 		return view('layouts.member_table', ['users' => $users]);
@@ -31,9 +35,9 @@ class UserController extends Controller
 		$user_id = $request->user_id;
 		$org_id = $request->org_id;
 
-		$memberExists = UserOrganisation::where('user_id', $user_id)->where('org_id', $org_id);
+		$member = UserOrganisation::where('user_id', $user_id)->where('org_id', $org_id);
 
-		if ($memberExists->first() == null) {
+		if ($member->first() == null) {
 			$userOrg = new UserOrganisation;
 			$userOrg->user_id = $user_id;
 			$userOrg->org_id = $org_id;
@@ -41,7 +45,7 @@ class UserController extends Controller
 
 			return 'Member ID ' . $user_id . ' has been added to the organisation';
 		} else {
-			$memberExists->delete();
+			$member->delete();
 			return 'Member ID ' . $user_id . ' has been removed from the organisation';
 		}
 	}
@@ -50,13 +54,13 @@ class UserController extends Controller
 	{
 		$user_id = $request->user_id;
 
-		$user = DB::table('users')->where('id', $user_id)->first();
+		$user = User::where('id', $user_id);
 
-		if ($user->role == 'member') {
-			DB::table('users')->where('id', $user_id)->update(['role' => 'announcer']);
+		if ($user->first()->role == 'member') {
+			$user->update(['role' => 'announcer']);
 			return 'Member ID ' . $user_id . ' has been promoted to an announcer';
 		} else {
-			DB::table('users')->where('id', $user_id)->update(['role' => 'member']);
+			$user->update(['role' => 'member']);
 			return 'Member ID ' . $user_id . ' has been demoted to a member';
 		}
 	}

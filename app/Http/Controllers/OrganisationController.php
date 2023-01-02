@@ -69,13 +69,14 @@ class OrganisationController extends Controller
 	 */
 	public function show($id, Request $request)
 	{
+		$inner = function ($query) use ($id) {
+			$query->where('org_id',  $id)
+				->orWhere('org_id', null);
+		};
+
 		$users = User::leftJoin('user_organisations', 'user_organisations.user_id', '=', 'users.id')
 			->select('users.*', 'user_organisations.org_id')
-			->where(function ($query) {
-				global $id;
-				$query->where('org_id',  $id)
-					->orWhere('org_id', null);
-			})
+			->where($inner)
 			->whereNot('users.role', 'admin')->get();
 
 		$memberCount = count(UserOrganisation::where('org_id', $id)->get());
