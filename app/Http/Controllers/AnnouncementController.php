@@ -17,6 +17,22 @@ class AnnouncementController extends Controller
 		return view('announcements.create');
 	}
 
+	public function show($id)
+	{
+		// return $id;
+		$announcementVotes = DB::table('announcement_votes')->selectRaw('announcement_id, SUM(vote_val) as vote_sum')->groupBy('announcement_id');
+
+		$announcement = DB::table('announcements')->join('users', 'announcements.user_id', '=', 'users.id')->leftJoinSub($announcementVotes, 'announcement_votes', function ($join) {
+			$join->on('announcement_votes.announcement_id', '=', 'announcements.id');
+		})->select('announcements.*', 'users.name as user_name', 'users.role as user_role', 'announcement_votes.vote_sum')->where('announcements.id', $id)->first();
+
+		if ($announcement == null) {
+			return abort(404);
+		}
+
+		return view('announcements.show', ['name' => Auth::user()->name, 'role' => Auth::user()->role, 'user_id' => Auth::user()->id, 'announcement' => $announcement]);
+	}
+
 	public function store(Request $request)
 	{
 

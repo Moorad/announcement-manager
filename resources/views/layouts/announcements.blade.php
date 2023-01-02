@@ -1,5 +1,5 @@
 <div class='flex flex-col justify-center items-center gap-10 mt-6'>
-		@if (count($announcements) == 0)
+		@if ($in_org != null && count($announcements) == 0)
 		<div class='text-gray-400'>{{$empty_message}}</div>
 		@endif
 
@@ -28,10 +28,12 @@
 						<button onclick="downVote({{$announcement->id}}, this)">Downvote</button>
 					<span id='vote_value'>{{$announcement->vote_sum ?: 0}}</span>
 					</div>
+					<a href="{{route('announcements.show', $announcement->id)}}">
 					<div>
 						<button>Comments</button>
 						<span>0</span>
 					</div>
+				</a>
 				</div>
 			</div>
 		@endforeach

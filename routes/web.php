@@ -32,6 +32,8 @@ Route::middleware(['auth', 'has_org'])->group(function () {
 	Route::get('/organisations/users', [OrganisationController::class, 'users'])->middleware(['has_org'])->name('organisations.users');
 
 	Route::get('/announcements/create', [AnnouncementController::class, 'create'])->name('announcements.create');
+	Route::get('/announcement/{id}', [AnnouncementController::class, 'show'])->name('announcements.show');
+
 	Route::post('/announcements', [AnnouncementController::class, 'store'])->name('announcements.store');
 
 	Route::get('/profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
