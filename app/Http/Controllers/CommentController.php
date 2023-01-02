@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class CommentController extends Controller
 {
@@ -18,7 +17,9 @@ class CommentController extends Controller
 		$comment->content = $request->content;
 		$comment->save();
 
-		$comments = DB::table('comments')->where('announcement_id', $request->announcement_id)->join('users', 'users.id', 'comments.user_id')->select('comments.*', 'users.name as user_name', 'users.role as user_role')->get();
+		$comments = Comment::where('announcement_id', $request->announcement_id)
+			->join('users', 'users.id', 'comments.user_id')
+			->select('comments.*', 'users.name as user_name', 'users.role as user_role')->get();
 
 		return view('layouts.comments', ['comments' => $comments]);
 	}

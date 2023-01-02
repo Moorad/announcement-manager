@@ -65,7 +65,7 @@ class Kernel extends HttpKernel
 		'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 		'owner_of_org' => \App\Http\Middleware\OwnerOfOrg::class,
 		'has_org' => \App\Http\Middleware\HasOrg::class,
-		'get_announcements' => \App\Http\Middleware\GetAnnouncements::class
-
+		'get_announcements' => \App\Http\Middleware\GetAnnouncements::class,
+		'has_role' => \App\Http\Middleware\HasRole::class
 	];
 }
