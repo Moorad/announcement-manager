@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\OrganisationController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +38,8 @@ Route::middleware(['auth', 'has_org'])->group(function () {
 	Route::post('/announcements', [AnnouncementController::class, 'store'])->name('announcements.store');
 
 	Route::get('/profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
+
+	Route::post('/comments', [CommentController::class, 'store'])->middleware(['auth'])->name('comments.store');
 });
 
 

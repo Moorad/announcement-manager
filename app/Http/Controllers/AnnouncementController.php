@@ -30,7 +30,9 @@ class AnnouncementController extends Controller
 			return abort(404);
 		}
 
-		return view('announcements.show', ['name' => Auth::user()->name, 'role' => Auth::user()->role, 'user_id' => Auth::user()->id, 'announcement' => $announcement]);
+		$comments = DB::table('comments')->where('announcement_id', $id)->join('users', 'users.id', 'comments.user_id')->select('comments.*', 'users.name as user_name', 'users.role as user_role')->get();
+
+		return view('announcements.show', ['name' => Auth::user()->name, 'role' => Auth::user()->role, 'user_id' => Auth::user()->id, 'announcement' => $announcement, 'comments' => $comments]);
 	}
 
 	public function store(Request $request)
