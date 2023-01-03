@@ -7,6 +7,7 @@ use App\Models\AnnouncementVote;
 use App\Models\Comment;
 use App\Models\User;
 use App\Notifications\AnnouncementCreated;
+use App\Notifications\AnnouncementUpdated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -71,7 +72,7 @@ class AnnouncementController extends Controller
 				->get();
 
 			foreach ($users as $user) {
-				$user->notify(new AnnouncementCreated);
+				$user->notify(new AnnouncementCreated([$announcement]));
 			}
 		}
 
@@ -140,7 +141,17 @@ class AnnouncementController extends Controller
 			return redirect()->to(route('home'));
 		}
 
-		$announcement->update(['title' => $request->announcement_title, 'text' => $request->announcement_text, 'edited' => true]);
+		$announcement->update(['title' => $request->announcement_title, 'text' => $request->announcement_text, 'edited' => true, "priority" => $request->announcement_priority]);
+
+		if ($request->announcement_priority == 'high' || $request->announcement_priority == 'normal') {
+			$users = User::join('user_organisations', 'users.id', 'user_organisations.user_id')
+				->where('org_id', $request->attributes->get('org_data')->id)
+				->get();
+
+			foreach ($users as $user) {
+				$user->notify(new AnnouncementUpdated([$announcement->first()]));
+			}
+		}
 
 		return redirect()->to(route('announcements.show', $announcement->first()->id));
 	}

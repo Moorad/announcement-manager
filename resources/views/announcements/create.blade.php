@@ -32,16 +32,16 @@
             </div>
 
             <div>
-                <x-input-label for="send_notification" :value="__('Announcement Priority')" />
+                <x-input-label for="announcement_priority" :value="__('Announcement Priority')" />
 
                 <input type="radio" id="high" name="announcement_priority" value="high">
-                <label for="high">High</label><br>
+                <label for="high">High</label>
                 <div class="text-sm text-gray-400">
                     An email notification will be sent to all members and the announcement will be
                     pinned.
                 </div>
                 <input type="radio" id="normal" name="announcement_priority" value="normal">
-                <label for="normal">Normal</label><br>
+                <label for="normal">Normal</label>
                 <div class="text-sm text-gray-400">
                     An email notification will be sent to all members.
                 </div>

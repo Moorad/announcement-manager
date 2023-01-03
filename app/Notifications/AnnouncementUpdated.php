@@ -3,15 +3,15 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AnnouncementCreated extends Notification
+class AnnouncementUpdated extends Notification
 {
 	use Queueable;
 
 	protected $arr;
-
 	/**
 	 * Create a new notification instance.
 	 *
@@ -43,9 +43,9 @@ class AnnouncementCreated extends Notification
 	{
 		$announcement = $this->arr[0];
 		return (new MailMessage)
-			->subject('An announcement has been created')
-			->greeting('An announcement has been created')
-			->line('The announcement titled ' . $announcement->title . ' has been created')
+			->subject('An announcement has been updated')
+			->greeting('An announcement has been updated')
+			->line('The announcement titled ' . $announcement->title . ' has been updated')
 			->action('View Announcement', route('announcements.show', $announcement->id))
 			->line('You are receiving this because the announcement has a priority of ' . $announcement->priority);
 	}
