@@ -29,8 +29,8 @@
     <div class="flex bg-gray-200 px-5 pt-2 pb-2 rounded-md justify-between">
         <div class="flex gap-5">
             <div>
-                <button onclick="upVote({{ $announcement->id }}, this)">Upvote</button>
-                <button onclick="downVote({{ $announcement->id }}, this)">Downvote</button>
+                <button onclick="upVoteAnnouncement({{ $announcement->id }}, this)">Upvote</button>
+                <button onclick="downVoteAnnouncement({{ $announcement->id }}, this)">Downvote</button>
                 <span id='vote_value'>{{ $announcement->vote_sum ?: 0 }}</span>
             </div>
             <div>

@@ -7,11 +7,11 @@
         @include('layouts.announcement')
     @endforeach
     <script>
-        function upVote(id, element) {
+        function upVoteAnnouncement(id, element) {
             fetchVote(id, 1, element)
         }
 
-        function downVote(id, element) {
+        function downVoteAnnouncement(id, element) {
             fetchVote(id, -1, element);
         }
 

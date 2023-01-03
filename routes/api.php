@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,3 +27,5 @@ Route::post('/user/update_announcer', [UserController::class, 'update_announcer'
 
 Route::post('/announcements/image/{id}', [AnnouncementController::class, 'image'])->name('announcements.image');
 Route::post('/announcements/update_vote', [AnnouncementController::class, 'update_vote'])->name('announcements.vote');
+
+Route::post('/comments/update_vote', [CommentController::class, 'update_vote'])->name('comments.vote');
