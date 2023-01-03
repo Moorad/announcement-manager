@@ -26,11 +26,15 @@ class GetAnnouncements
 
 		$commentCount = DB::table('comments')->selectRaw('announcement_id, COUNT(announcement_id) as comment_count')->groupBy('announcement_id');
 
-		$announcements = DB::table('announcements')->join('users', 'announcements.user_id', '=', 'users.id')->leftJoinSub($announcementVotes, 'announcement_votes', function ($join) {
-			$join->on('announcement_votes.announcement_id', '=', 'announcements.id');
-		})->leftJoinSub($commentCount, 'comments', function ($join) {
-			$join->on('comments.announcement_id', '=', 'announcements.id');
-		})->select('announcements.*', 'users.name as user_name', 'users.role as user_role', 'announcement_votes.vote_sum', 'comments.comment_count')->where('org_id', $request->attributes->get('org_data')->id)->get();
+		$announcements = DB::table('announcements')->join('users', 'announcements.user_id', '=', 'users.id')
+			->leftJoinSub($announcementVotes, 'announcement_votes', function ($join) {
+				$join->on('announcement_votes.announcement_id', '=', 'announcements.id');
+			})
+			->leftJoinSub($commentCount, 'comments', function ($join) {
+				$join->on('comments.announcement_id', '=', 'announcements.id');
+			})
+			->select('announcements.*', 'users.name as user_name', 'users.role as user_role', 'announcement_votes.vote_sum', 'comments.comment_count')->where('org_id', $request->attributes->get('org_data')->id)
+			->orderByRaw('announcements.priority = "high" DESC, announcements.updated_at DESC')->get();
 
 		$request->attributes->add(['announcements' => $announcements]);
 		return $next($request);

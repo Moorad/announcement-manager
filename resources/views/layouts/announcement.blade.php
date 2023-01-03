@@ -1,5 +1,8 @@
 <div class='bg-gray-100 w-full max-w-[40rem] rounded-md'>
     <div class='px-5 py-3'>
+        @if ($announcement->priority == 'high')
+            <div class="text-red-500 font-bold mb-2">! High priority announcement</div>
+        @endif
         <div class='mb-3'>
             <a href="{{ route('profile.show', $announcement->user_id) }}">
                 <div class='font-bold'>{{ $announcement->user_name }} <span

@@ -50,6 +50,7 @@ class AnnouncementController extends Controller
 		$announcement->org_id = $request->attributes->get('org_data')->id;
 		$announcement->title = $request->announcement_title;
 		$announcement->text = $request->announcement_text;
+		$announcement->priority = $request->announcement_priority;
 
 		if ($request->hasFile('announcement_image')) {
 			$request->validate([

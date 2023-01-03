@@ -21,6 +21,7 @@ return new class extends Migration
 			$table->string('text');
 			$table->string('attached_image')->nullable();
 			$table->boolean('edited')->default(false);
+			$table->enum('priority', ['low', 'normal', 'high'])->default('low');
 			$table->timestamps();
 
 			$table->foreign('user_id')->references('id')->on('users')
