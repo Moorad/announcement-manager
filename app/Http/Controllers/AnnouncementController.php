@@ -6,6 +6,7 @@ use App\Models\Announcement;
 use App\Models\AnnouncementVote;
 use App\Models\Comment;
 use App\Models\User;
+use App\Notifications\AnnouncementCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -61,6 +62,17 @@ class AnnouncementController extends Controller
 		}
 
 		$announcement->save();
+
+
+		if ($request->announcement_priority == 'high' || $request->announcement_priority == 'normal') {
+			$users = User::join('user_organisations', 'users.id', 'user_organisations.user_id')
+				->where('org_id', $request->attributes->get('org_data')->id)
+				->get();
+
+			foreach ($users as $user) {
+				$user->notify(new AnnouncementCreated);
+			}
+		}
 
 		return redirect()->to(route('announcements.show', $announcement->id));
 	}
