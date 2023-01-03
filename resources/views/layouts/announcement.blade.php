@@ -37,9 +37,9 @@
                 <a href="{{ route('announcements.show', $announcement->id) }}">
                     <button>Comments</button>
                     @isset($comments)
-                        <span>{{ count($comments) ?: 0 }}</span>
+                        <span class="comment-count">{{ count($comments) ?: 0 }}</span>
                     @else
-                        <span>{{ $announcement->comment_count ?: 0 }}</span>
+                        <span class="comment-count">{{ $announcement->comment_count ?: 0 }}</span>
                     @endisset
                 </a>
             </div>

@@ -32,7 +32,7 @@
 
     <div class='text-3xl font-bold my-5'>Comments</div>
 
-    <div class='mx-auto w-full max-w-[40rem] flex flex-col gap-5 my-5' id='comment-group''>
+    <div class='mx-auto w-full max-w-[40rem] flex flex-col gap-5 my-5'>
         @foreach ($comments as $comment)
             <div>
                 <div>Commented on <a href="{{ route('announcements.show', $comment->announcement_id) }}"

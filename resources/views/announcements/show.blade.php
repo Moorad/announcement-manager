@@ -18,7 +18,9 @@
                             onclick="event.preventDefault();submitComment(this)">Send</button></div>
                 </div>
             </form>
-            @include('layouts.comments')
+            <div id='comment-group'>
+                @include('layouts.comments')
+            </div>
         </div>
 
     </div>
@@ -38,6 +40,8 @@
                 .then(res => res.text())
                 .then(html => {
                     document.querySelector('#comment-group').innerHTML = html;
+                    const commentCount = document.querySelector('.comment-count');
+                    commentCount.innerText = Number(commentCount.innerText) + 1;
                 });
         }
 

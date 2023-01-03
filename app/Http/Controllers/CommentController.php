@@ -9,6 +9,7 @@ use App\Models\Vote;
 use App\Notifications\AnnouncementInteraction;
 use App\Notifications\CommentInteraction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -33,7 +34,7 @@ class CommentController extends Controller
 
 		$announcementOwner->notify(new AnnouncementInteraction(['comment', $announcement, $userCommented]));
 
-		return view('layouts.comments', ['comments' => $comments]);
+		return view('layouts.comments', ['comments' => $comments, 'user' => Auth::user()]);
 	}
 
 	public function update_vote(Request $request)
