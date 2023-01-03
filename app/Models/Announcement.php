@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Announcement extends Model
 {
 	use HasFactory;
+
+	public function vote()
+	{
+		return $this->morphMany(Vote::class, 'votable');
+	}
 }

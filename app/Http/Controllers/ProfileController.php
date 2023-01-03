@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Announcement;
-use App\Models\AnnouncementVote;
+use App\Models\Vote;
 use App\Models\Comment;
 use App\Models\Organisation;
 use App\Models\User;
@@ -24,14 +24,13 @@ class ProfileController extends Controller
 			return abort(404);
 		}
 
-		$grouped_votes = AnnouncementVote::selectRaw('announcement_id, SUM(vote_val) as vote_sum')
-			->groupBy('announcement_id');
+		$grouped_votes = Vote::whereHasMorph('votable', [Announcement::class])->selectRaw('votable_id, SUM(vote_val) as vote_sum')->groupBy('votable_id');
 
 		$announcements = Announcement::join('users', 'announcements.user_id', '=', 'users.id')
-			->leftJoinSub($grouped_votes, 'announcement_votes', function ($join) {
-				$join->on('announcement_votes.announcement_id', '=', 'announcements.id');
+			->leftJoinSub($grouped_votes, 'votes', function ($join) {
+				$join->on('votes.votable_id', '=', 'announcements.id');
 			})
-			->select('announcements.*', 'users.name as user_name', 'users.role as user_role', 'announcement_votes.vote_sum')
+			->select('announcements.*', 'users.name as user_name', 'users.role as user_role', 'votes.vote_sum')
 			->where('announcements.user_id', $id)->get();
 
 		$comments = Comment::where('comments.user_id', $user->id)

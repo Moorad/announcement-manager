@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Announcement;
-use App\Models\AnnouncementVote;
+use App\Models\Vote;
 use App\Models\Comment;
 use App\Models\User;
 use App\Notifications\AnnouncementCreated;
@@ -88,13 +88,13 @@ class AnnouncementController extends Controller
 	 */
 	public function show($id)
 	{
-		$announcementVotes = AnnouncementVote::selectRaw('announcement_id, SUM(vote_val) as vote_sum')->groupBy('announcement_id');
+		$announcementVotes = Vote::whereHasMorph('votable', [Announcement::class])->selectRaw('votable_id, SUM(vote_val) as vote_sum')->groupBy('votable_id');
 
 		$announcement = Announcement::join('users', 'announcements.user_id', '=', 'users.id')
-			->leftJoinSub($announcementVotes, 'announcement_votes', function ($join) {
-				$join->on('announcement_votes.announcement_id', '=', 'announcements.id');
+			->leftJoinSub($announcementVotes, 'votes', function ($join) {
+				$join->on('votes.votable_id', '=', 'announcements.id');
 			})
-			->select('announcements.*', 'users.name as user_name', 'users.role as user_role', 'announcement_votes.vote_sum')
+			->select('announcements.*', 'users.name as user_name', 'users.role as user_role', 'votes.vote_sum')
 			->where('announcements.id', $id)->first();
 
 		if ($announcement == null) {
@@ -170,7 +170,7 @@ class AnnouncementController extends Controller
 
 	public function update_vote(Request $request)
 	{
-		$userVoteExists = AnnouncementVote::where('announcement_id', $request->announcement_id)
+		$userVoteExists = Vote::whereHasMorph('votable', [Announcement::class])->where('votable_id', $request->announcement_id)
 			->where('user_id', $request->user_id);
 
 		$userVoted = User::where('id', $request->user_id)->first();
@@ -178,8 +178,9 @@ class AnnouncementController extends Controller
 		$announcementOwner = User::where('id', $announcement->user_id)->first();
 
 		if ($userVoteExists->first() == null) {
-			$vote = new AnnouncementVote;
-			$vote->announcement_id = $request->announcement_id;
+			$vote = new Vote;
+			$vote->votable_id = $request->announcement_id;
+			$vote->votable_type = Announcement::class;
 			$vote->user_id = $request->user_id;
 			$vote->vote_val = $request->vote_val;
 			$vote->save();
@@ -203,7 +204,7 @@ class AnnouncementController extends Controller
 			}
 		}
 
-		$sum = AnnouncementVote::where('announcement_id', $request->announcement_id)
+		$sum = Vote::whereHasMorph('votable', [Announcement::class])->where('votable_id', $request->announcement_id)
 			->sum('vote_val');
 
 		return $sum;

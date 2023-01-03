@@ -5,7 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AnnouncementVote extends Model
+class Vote extends Model
 {
-    use HasFactory;
+	use HasFactory;
+
+	public function votable()
+	{
+		return $this->morphTo();
+	}
 }

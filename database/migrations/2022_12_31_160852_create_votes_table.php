@@ -13,20 +13,14 @@ return new class extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('announcement_votes', function (Blueprint $table) {
-			$table->primary(['announcement_id', 'user_id']);
-			$table->bigInteger('announcement_id')->unsigned();
+		Schema::create('votes', function (Blueprint $table) {
+			$table->id();
+			$table->morphs('votable');
 			$table->bigInteger('user_id')->unsigned();
 
 			// This should be 1 or -1 for upvote or and downvote respectively
 			$table->integer('vote_val');
 			$table->timestamps();
-
-			$table->foreign('announcement_id')->references('id')->on('announcements')
-				->onDelete('cascade')->onUpdate('cascade');
-
-			$table->foreign('user_id')->references('id')->on('users')
-				->onDelete('cascade')->onUpdate('cascade');
 		});
 	}
 
