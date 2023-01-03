@@ -77,11 +77,15 @@ class OrganisationController extends Controller
 		$users = User::leftJoin('user_organisations', 'user_organisations.user_id', '=', 'users.id')
 			->select('users.*', 'user_organisations.org_id')
 			->where($inner)
-			->whereNot('users.role', 'admin')->get();
+			->whereNot('users.role', 'admin');
+
+		if ($request->query('search')) {
+			$users = $users->where('name', 'LIKE', '%' . $request->query('search') . '%');
+		}
 
 		$memberCount = count(UserOrganisation::where('org_id', $id)->get());
 
-		return view('organisations.show', ['user' => Auth::user(), 'org_data' => $request->attributes->get('org_data'), 'users' => $users, 'member_count' => $memberCount]);
+		return view('organisations.show', ['user' => Auth::user(), 'org_data' => $request->attributes->get('org_data'), 'users' => $users->paginate(15), 'member_count' => $memberCount]);
 	}
 
 	/**

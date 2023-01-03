@@ -20,7 +20,10 @@
 
     <div>
         <div class="flex flex-col gap-10">
-            <form id='search-form'>
+            <form id='search-form' action="{{ route('organisations.show', $org_data->id) }}" method="GET">
+                @csrf
+
+                @method('GET')
                 <div class="flex gap-5">
                     <div class='flex-grow'>
                         <x-input-label for="search" :value="__('Search for user')" />
@@ -28,8 +31,7 @@
                             autofocus />
                     </div>
                     <div class="flex items-end">
-                        <button class="bg-blue-500 text-white h-10 px-4 rounded md" type="submit"
-                            onclick="event.preventDefault(); searchUsers(this)">
+                        <button class="bg-blue-500 text-white h-10 px-4 rounded md">
                             Search
                         </button>
                     </div>
@@ -39,10 +41,11 @@
         <div>
             @include('layouts.member_table')
         </div>
+        <div>{{ $users->withQueryString()->links() }}</div>
         <div id='feedback' class='text-center'></div>
 
-        <div>Number of people selected: <span id='member_count_bottom'>{{ $member_count }}</span></div>
 
+        <div>Number of people selected: <span id='member_count_bottom'>{{ $member_count }}</span></div>
 
         <div>
             <button>Back</button>
@@ -54,23 +57,6 @@
         const orgId = '<?php echo $org_data->id; ?>'
         const memberCountBot = document.querySelector('#member_count_bottom');
         const memberCountTop = document.querySelector('#member_count_top');
-
-        function searchUsers(element) {
-            const searchInputBox = document.querySelector('#search');
-            const memberTable = document.querySelector('#member-table');
-            const searchForm = document.querySelector('#search-form');
-
-            const form = new FormData(searchForm);
-            form.append('org_id', orgId);
-            const data = new URLSearchParams(form);
-            fetch('<?php echo route('user.search'); ?>', {
-                    method: 'POST',
-                    body: data
-                }).then(res => res.text())
-                .then(html => {
-                    memberTable.innerHTML = html;
-                })
-        }
 
         function updateMember(element) {
             const isMemberChecked = element.checked;

@@ -44,3 +44,13 @@
         @endforeach
     </tbody>
 </table>
+
+@if (count($users) == 0)
+    <div class="text-center my-5 text-gray-500">
+        <div>No results found</div>
+        <a href="{{ route('organisations.show', $org_data->id) }}">
+            <div class="text-blue-600 underline">View all members</div>
+        </a>
+    </div>
+    <div class="text-center"></div>
+@endif
