@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\UserOrganisation;
+use App\Notifications\AddedUserToOrg;
+use App\Notifications\RemovedUserFromOrg;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -37,15 +39,19 @@ class UserController extends Controller
 
 		$member = UserOrganisation::where('user_id', $user_id)->where('org_id', $org_id);
 
+		$user = User::where('id', $user_id)->first();
 		if ($member->first() == null) {
 			$userOrg = new UserOrganisation;
 			$userOrg->user_id = $user_id;
 			$userOrg->org_id = $org_id;
 			$userOrg->save();
 
+			$user->notify(new AddedUserToOrg);
 			return 'Member ID ' . $user_id . ' has been added to the organisation';
 		} else {
 			$member->delete();
+
+			$user->notify(new RemovedUserFromOrg);
 			return 'Member ID ' . $user_id . ' has been removed from the organisation';
 		}
 	}
