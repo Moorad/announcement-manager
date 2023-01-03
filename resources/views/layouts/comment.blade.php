@@ -23,7 +23,13 @@
                 <a href="{{ route('announcements.edit', $comment->id) }}">
                     <div class="cursor-pointer">Edit</div>
                 </a>
-                <div class="text-red-500 cursor-pointer">Delete</div>
+                <form method='POST' action="{{ route('comments.destroy', $comment->id) }}"
+                    onsubmit="return confirm('Are you sure you want to delete this?');">
+                    @csrf
+
+                    @method('DELETE')
+                    <button class="text-red-500 cursor-pointer">Delete</button>
+                </form>
             </div>
         @endif
     </div>

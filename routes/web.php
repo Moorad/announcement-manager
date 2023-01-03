@@ -26,14 +26,13 @@ Route::middleware(['auth', 'has_org'])->group(function () {
 
 	Route::resource('organisations', OrganisationController::class);
 	Route::resource('announcements', AnnouncementController::class);
+	Route::resource('comments', CommentController::class);
 
 	Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 	Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 	Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 	Route::get('/profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
-
-	Route::post('/comments', [CommentController::class, 'store'])->middleware(['auth'])->name('comments.store');
 });
 
 

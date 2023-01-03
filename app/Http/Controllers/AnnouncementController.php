@@ -165,7 +165,9 @@ class AnnouncementController extends Controller
 	 */
 	public function destroy($id)
 	{
-		//
+		Announcement::find($id)->delete();
+
+		return redirect()->to(route('home'));
 	}
 
 	public function update_vote(Request $request)
