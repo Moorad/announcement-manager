@@ -7,6 +7,7 @@ use App\Models\AnnouncementVote;
 use App\Models\Comment;
 use App\Models\User;
 use App\Notifications\AnnouncementCreated;
+use App\Notifications\AnnouncementInteraction;
 use App\Notifications\AnnouncementUpdated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -172,17 +173,33 @@ class AnnouncementController extends Controller
 		$userVoteExists = AnnouncementVote::where('announcement_id', $request->announcement_id)
 			->where('user_id', $request->user_id);
 
+		$userVoted = User::where('id', $request->user_id)->first();
+		$announcement = Announcement::where('id', $request->announcement_id)->first();
+		$announcementOwner = User::where('id', $announcement->user_id)->first();
+
 		if ($userVoteExists->first() == null) {
 			$vote = new AnnouncementVote;
 			$vote->announcement_id = $request->announcement_id;
 			$vote->user_id = $request->user_id;
 			$vote->vote_val = $request->vote_val;
 			$vote->save();
+
+			if ($request->vote_val > 0) {
+				$announcementOwner->notify(new AnnouncementInteraction(['upvote', $announcement, $userVoted]));
+			} else {
+				$announcementOwner->notify(new AnnouncementInteraction(['downvote', $announcement, $userVoted]));
+			}
 		} else {
 			if ($userVoteExists->first()->vote_val == $request->vote_val) {
 				$userVoteExists->delete();
 			} else {
 				$userVoteExists->update(['vote_val' => $request->vote_val]);
+
+				if ($request->vote_val > 0) {
+					$announcementOwner->notify(new AnnouncementInteraction(['upvote', $announcement, $announcementOwner]));
+				} else {
+					$announcementOwner->notify(new AnnouncementInteraction(['downvote', $announcement, $announcementOwner]));
+				}
 			}
 		}
 
