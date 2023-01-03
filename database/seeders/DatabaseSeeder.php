@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
 		// ]);
 
 		$this->call(UserTableSeeder::class);
-
 		User::factory(100)->create();
+
+		$this->call(OrganisationTableSeeder::class);
 	}
 }
