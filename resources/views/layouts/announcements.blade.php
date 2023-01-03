@@ -6,6 +6,9 @@
     @foreach ($announcements as $announcement)
         @include('layouts.announcement')
     @endforeach
+
+    {{ $announcements->links() }}
+
     <script>
         function upVoteAnnouncement(id, element) {
             fetchVote(id, 1, element)

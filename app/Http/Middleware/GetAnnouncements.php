@@ -37,7 +37,7 @@ class GetAnnouncements
 				$join->on('comments.announcement_id', '=', 'announcements.id');
 			})
 			->select('announcements.*', 'users.name as user_name', 'users.role as user_role', 'votes.vote_sum', 'comments.comment_count')->where('org_id', $request->attributes->get('org_data')->id)
-			->orderByRaw('announcements.priority = "high" DESC, announcements.updated_at DESC')->get();
+			->orderByRaw('announcements.priority = "high" DESC, announcements.updated_at DESC')->paginate(20);
 
 		$request->attributes->add(['announcements' => $announcements]);
 		return $next($request);
