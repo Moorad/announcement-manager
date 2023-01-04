@@ -31,20 +31,26 @@
 						hover:file:cursor-pointer' />
                     <div class='text-gray-500'>SVG, PNG, JPG, GIF or WebP.</div>
                 </div>
+
                 <div>
+                    <input type="text" value="" name="giphy_gif_src" id='giphy_gif_src' class="hidden">
                     <x-input-label for="giphy_image" :value="__('Or use Giphy')" />
-                    <div class="flex gap-2 bg-black w-fit h-fit text-white px-4 py-2 rounded-md cursor-pointer"
-                        onclick="openGiphySection()">
-                        <img src="https://cdn.worldvectorlogo.com/logos/giphy-logo-1.svg" alt="" class="h-5">
-                        <div>Giphy</div>
+                    <div class="flex items-center gap 5">
+                        <div class="flex gap-2 bg-black w-fit h-fit text-white px-4 py-2 rounded-md cursor-pointer"
+                            onclick="toggleGiphySection()">
+                            <img src="https://cdn.worldvectorlogo.com/logos/giphy-logo-1.svg" alt="" class="h-5">
+                            <div>Giphy</div>
+                        </div>
+                        <div class="ml-5 mr-3" id='selected_gif_text'>No gif selected</div>
                     </div>
+                    <div class="text-gray-500">If an image is attached the gif will be ignored</div>
                 </div>
             </div>
 
-            <div id="giphy-section" class="">
+            <div id="giphy-section" class="hidden">
                 <x-input-label for="gif_search" :value="__('Search for a gif')" />
                 <div class="flex items-center">
-                    <x-text-input id="gif_search" class="block w-full" type="text" name="gif_search" />
+                    <x-text-input id="gif_search" class="block w-full" type="text" />
                     <button class='bg-blue-500 text-white px-4 rounded-md mx-2 h-10'
                         onclick="event.preventDefault();giphyLoadSearch()">Search</button>
                 </div>
@@ -82,7 +88,7 @@
     <script>
         let sectionOpen = false;
 
-        function openGiphySection() {
+        function toggleGiphySection() {
             const giphySection = document.querySelector('#giphy-section');
             if (sectionOpen) {
                 giphySection.classList.add('hidden');
@@ -97,7 +103,6 @@
             fetch("<?php echo route('giphy.trending'); ?>")
                 .then((res) => res.text())
                 .then((res) => {
-                    console.log(res);
                     document.querySelector('#gif-list').innerHTML = res;
                 });
         }
@@ -107,9 +112,15 @@
             fetch("<?php echo route('giphy.search'); ?>?q=" + q)
                 .then((res) => res.text())
                 .then((res) => {
-                    console.log(res);
                     document.querySelector('#gif-list').innerHTML = res;
                 });
+        }
+
+        function selectGif(img) {
+            toggleGiphySection();
+            document.querySelector('#giphy_gif_src').value = img.src;
+            document.querySelector('#selected_gif_text').innerText = img.dataset.id
+
         }
     </script>
 @endsection

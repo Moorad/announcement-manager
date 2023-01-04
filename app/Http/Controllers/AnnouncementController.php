@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Notifications\AnnouncementCreated;
 use App\Notifications\AnnouncementInteraction;
 use App\Notifications\AnnouncementUpdated;
+use App\Services\GiphyAPI;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -62,6 +63,10 @@ class AnnouncementController extends Controller
 			$request->file('announcement_image')->store('announcement_images', 'public');
 
 			$announcement->attached_image = $request->file('announcement_image')->hashName();
+		} else if ($request->giphy_gif_src) {
+			$hashed_name = app()->make(GiphyAPI::class)->saveGif($request->giphy_gif_src);
+
+			$announcement->attached_image = $hashed_name;
 		}
 
 		$announcement->save();

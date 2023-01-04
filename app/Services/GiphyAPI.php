@@ -37,6 +37,9 @@ class GiphyAPI
 	{
 		$image = file_get_contents($url);
 
-		Storage::put('public/announcement_images/' . md5($image) . '.gif', $image);
+		$hashed_name = md5($image) . '.gif';
+		Storage::put('public/announcement_images/' . $hashed_name, $image);
+
+		return $hashed_name;
 	}
 }
