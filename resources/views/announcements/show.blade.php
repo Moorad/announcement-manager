@@ -42,6 +42,7 @@
                     document.querySelector('#comment-group').innerHTML = html;
                     const commentCount = document.querySelector('.comment-count');
                     commentCount.innerText = Number(commentCount.innerText) + 1;
+                    document.querySelector('#content').value = '';
                 });
         }
     </script>

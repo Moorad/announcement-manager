@@ -8,7 +8,7 @@
         </a>
         <div class="text-sm text-gray-400">{{ $comment->updated_at }}</div>
 
-        <div class="mt-3">{{ $comment->content }}</div>
+        <div class="mt-3 break-words">{{ $comment->content }}</div>
     </div>
     <div class="flex px-5 pt-2 pb-2 rounded-md justify-between">
         <div class="flex gap-5">

@@ -11,8 +11,8 @@
             </a>
             <div class='text-sm text-gray-400'>{{ $announcement->updated_at }}</div>
         </div>
-        <div class='text-2xl font-bold'>{{ $announcement->title }}</div>
-        <div>{{ $announcement->text }}</div>
+        <div class='text-2xl font-bold break-words'>{{ $announcement->title }}</div>
+        <div class="break-words">{{ $announcement->text }}</div>
 
         @if ($announcement->attached_image)
             <div>

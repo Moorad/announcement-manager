@@ -31,7 +31,7 @@
                             autofocus />
                     </div>
                     <div class="flex items-end">
-                        <button class="bg-blue-500 text-white h-10 px-4 rounded md">
+                        <button class="bg-blue-500 text-white h-10 px-4 rounded-md">
                             Search
                         </button>
                     </div>
@@ -48,7 +48,9 @@
         <div>Number of people selected: <span id='member_count_bottom'>{{ $member_count }}</span></div>
 
         <div>
-            <button>Back</button>
+            <a href="{{ route('home') }}">
+                <button class="bg-blue-500 text-white h-10 px-4 rounded-md">Back</button>
+            </a>
         </div>
     </div>
     </div>
