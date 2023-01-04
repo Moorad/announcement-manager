@@ -7,5 +7,7 @@
         @include('layouts.announcement')
     @endforeach
 
-    {{ $announcements->links() }}
+    @if ($announcements)
+        {{ $announcements->links() }}
+    @endif
 </div>

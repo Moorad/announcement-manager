@@ -20,7 +20,7 @@
         </div>
         @if ($user->id == $comment->user_id || $user->role == 'admin')
             <div class="flex gap-5">
-                <a href="{{ route('announcements.edit', $comment->id) }}">
+                <a href="{{ route('comments.edit', $comment->id) }}">
                     <div class="cursor-pointer">Edit</div>
                 </a>
                 <form method='POST' action="{{ route('comments.destroy', $comment->id) }}"

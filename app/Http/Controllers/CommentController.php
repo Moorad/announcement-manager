@@ -80,7 +80,14 @@ class CommentController extends Controller
 	 */
 	public function edit($id)
 	{
-		//
+		$user = User::where('id', Auth::user()->id)->first();
+		$comment = Comment::where('id', $id)->first();
+
+		if ($user->id != $comment->user_id && $user->role != 'admin') {
+			return redirect()->to(route('home'));
+		}
+
+		return view('comments.edit', ["user" => Auth::user(), 'comment' => $comment]);
 	}
 
 	/**
@@ -92,7 +99,16 @@ class CommentController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
-		//
+		$user = User::where('id', Auth::user()->id)->first();
+		$comment = Comment::where('id', $id);
+
+		if ($user->id != $comment->first()->user_id && $user->role != 'admin') {
+			return redirect()->to(route('home'));
+		}
+
+		$comment->update(['content' => $request->comment_content]);
+
+		return redirect()->to(route('announcements.show', $comment->first()->announcement_id));
 	}
 
 	/**
