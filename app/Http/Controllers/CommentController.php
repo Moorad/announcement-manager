@@ -58,7 +58,7 @@ class CommentController extends Controller
 
 		$announcementOwner->notify(new AnnouncementInteraction(['comment', $announcement, $userCommented]));
 
-		return view('layouts.comments', ['comments' => $comments, 'user' => Auth::user()]);
+		return view('layouts.comments', ['comments' => $comments, 'user' => Auth::user(), 'comment_success' => 'The comment has been created successfully!']);
 	}
 
 	/**
@@ -108,7 +108,7 @@ class CommentController extends Controller
 
 		$comment->update(['content' => $request->comment_content]);
 
-		return redirect()->to(route('announcements.show', $comment->first()->announcement_id));
+		return redirect()->to(route('announcements.show', $comment->first()->announcement_id))->with('comment-success', 'The comment has been updated successfully!');
 	}
 
 	/**
@@ -119,9 +119,11 @@ class CommentController extends Controller
 	 */
 	public function destroy($id)
 	{
-		Comment::find($id)->delete();
+		$comment = Comment::find($id);
 
-		return redirect()->to(route('home'));
+		$comment->delete();
+
+		return redirect()->back()->with('comment-success', 'The comment has been deleted successfully!');
 	}
 
 	public function update_vote(Request $request)

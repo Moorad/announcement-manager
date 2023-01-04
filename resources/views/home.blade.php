@@ -1,7 +1,6 @@
 @extends('layouts.main')
 
 @section('content')
-
     <div class='flex justify-center gap-3'>
         @if ($user->role == 'admin')
             <a href="{{ route('organisations.index') }}">
@@ -30,9 +29,14 @@
             @endif
         @endif
     </div>
-
-
-    @if ($in_org == true || $owns_org == true)
+    @if (session()->has('success'))
+        <div class="mb-4">
+            @include('components.alert', [
+                'content' => session()->get('success'),
+                'variant' => 'success',
+            ])
+        </div>
+    @elseif ($in_org == true || $owns_org == true)
         @include('components.alert', [
             'content' => "You are a member of the organisation titled <span class='font-bold'>$org_data->name</span>.",
             'variant' => 'info',
@@ -55,5 +59,4 @@
     @include('layouts.announcements', [
         'empty_message' => 'No announcements shared in this organisation yet.',
     ])
-
 @endsection

@@ -77,7 +77,7 @@ class AnnouncementController extends Controller
 			}
 		}
 
-		return redirect()->to(route('announcements.show', $announcement->id));
+		return redirect()->to(route('announcements.show', $announcement->id))->with('success', 'The announcement has been created successfully!');
 	}
 
 	/**
@@ -154,7 +154,7 @@ class AnnouncementController extends Controller
 			}
 		}
 
-		return redirect()->to(route('announcements.show', $announcement->first()->id));
+		return redirect()->to(route('announcements.show', $announcement->first()->id))->with('success', 'The announcement has been updated successfully!');;
 	}
 
 	/**
@@ -167,7 +167,7 @@ class AnnouncementController extends Controller
 	{
 		Announcement::find($id)->delete();
 
-		return redirect()->to(route('home'));
+		return redirect()->to(route('home'))->with('success', 'The announcement has been deleted successfully!');
 	}
 
 	public function update_vote(Request $request)

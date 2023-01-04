@@ -1,6 +1,14 @@
 @extends('layouts.main')
 
 @section('content')
+    @if (session()->has('success'))
+        <div class="mb-4">
+            @include('components.alert', [
+                'content' => session()->get('success'),
+                'variant' => 'success',
+            ])
+        </div>
+    @endif
     <div class='flex flex-col items-center gap-5'>
         @include('layouts.announcement')
 
