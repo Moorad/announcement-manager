@@ -8,7 +8,7 @@
                 <a href="{{ route('profile.show', $user->id) }}">
                     <div>{{ $user->name }}
                         @if (isset($user->role))
-                            <span class='bg-blue-500 px-2 rounded-full'>{{ $user->role }}</span>
+                            @include('components.user-role-pill')
                         @endif
                     </div>
                 </a>

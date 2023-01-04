@@ -2,8 +2,8 @@
     <div class=" p-5">
         <a href="{{ route('profile.show', $comment->user_id) }}">
             <div class="font-bold">
-                {{ $comment->user_name }} <span
-                    class="bg-blue-500 text-white px-2 rounded-full text-sm">{{ $comment->user_role }}</span>
+                {{ $comment->user_name }}
+                @include('components.user-role-pill', ['role' => $comment->user_role])
             </div>
         </a>
         <div class="text-sm text-gray-400">{{ $comment->updated_at }}</div>

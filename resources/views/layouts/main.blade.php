@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Announcement Board App</title>
 
@@ -30,7 +31,7 @@
 </head>
 
 <body class="antialiased">
-    @include('layouts.navbar')
+    @include('components.navbar')
     <main class='max-w-[60rem] mx-auto m-5'>
         @yield('content')
     </main>

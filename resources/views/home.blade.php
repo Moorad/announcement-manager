@@ -32,16 +32,28 @@
     </div>
 
 
-    @if ($in_org == true)
-        <div class='text-center mt-4'>You have been added to <span class='font-bold'>{{ $org_data->name }}</span>, you can
-            now interact with the organisation</div>
+    @if ($in_org == true || $owns_org == true)
+        @include('components.alert', [
+            'content' => "You are a member of the organisation titled <span class='font-bold'>$org_data->name</span>.",
+            'variant' => 'info',
+        ])
     @elseif ($user->role != 'admin')
-        <div class='text-center mt-4 text-gray-400'>You are not part of an organisation, please contact an admin to invite
-            you to an organisation</div>
+        @include('components.alert', [
+            'content' =>
+                'You are not a part of an organisation, please contact an admin to invite you to an organisation',
+            'variant' => 'warning',
+        ])
+    @elseif ($org_data == null)
+        @include('components.alert', [
+            'content' =>
+                "You do not own an organisation. Click on <span class='font-bold'> Create Organisation </span> to get started.",
+        ])
+    @else
+        Yes org
     @endif
 
     @include('layouts.announcements', [
-        'empty_message' => 'No announcements shared in this organisation yet. Check back later',
+        'empty_message' => 'No announcements shared in this organisation yet.',
     ])
 
 @endsection

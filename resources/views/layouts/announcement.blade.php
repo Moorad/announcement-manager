@@ -5,8 +5,8 @@
         @endif
         <div class='mb-3'>
             <a href="{{ route('profile.show', $announcement->user_id) }}">
-                <div class='font-bold'>{{ $announcement->user_name }} <span
-                        class='bg-blue-500 text-white px-2 rounded-full text-sm'>{{ $announcement->user_role }}</span>
+                <div class='font-bold'>{{ $announcement->user_name }}
+                    @include('components.user-role-pill', ['role' => $announcement->user_role])
                 </div>
             </a>
             <div class='text-sm text-gray-400'>{{ $announcement->updated_at }}</div>
