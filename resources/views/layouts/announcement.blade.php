@@ -27,34 +27,39 @@
         @endif
     </div>
     <div class="flex bg-gray-200 px-5 pt-2 pb-2 rounded-md justify-between">
-        <div class="flex gap-5">
-            <div>
-                <button onclick="upVoteAnnouncement({{ $announcement->id }}, this)">Upvote</button>
-                <button onclick="downVoteAnnouncement({{ $announcement->id }}, this)">Downvote</button>
+        <div class="flex gap-10">
+            <div class="flex items-center gap-2">
+                <button onclick="upVoteAnnouncement({{ $announcement->id }}, this)">
+                    <img src="{{ asset('images/up_arrow.svg') }}" class="h-5 w-5 default-icon">
+                </button>
+                <button onclick="downVoteAnnouncement({{ $announcement->id }}, this)">
+                    <img src="{{ asset('images/down_arrow.svg') }}" class="h-5 w-5 default-icon">
+                </button>
                 <span id='vote_value'>{{ $announcement->vote_sum ?: 0 }}</span>
             </div>
-            <div>
-                <a href="{{ route('announcements.show', $announcement->id) }}">
-                    <button>Comments</button>
+            <a href="{{ route('announcements.show', $announcement->id) }}">
+                <div class="flex items-center gap-2">
+
+                    <i class="fa-solid fa-comment text-lg text-gray-500"></i>
                     @isset($comments)
                         <span class="comment-count">{{ count($comments) ?: 0 }}</span>
                     @else
                         <span class="comment-count">{{ $announcement->comment_count ?: 0 }}</span>
                     @endisset
-                </a>
-            </div>
+                </div>
+            </a>
         </div>
         @if ($user->id == $announcement->user_id || $user->role == 'admin')
             <div class="flex gap-5">
                 <a href="{{ route('announcements.edit', $announcement->id) }}">
-                    <div class="cursor-pointer">Edit</div>
+                    <div class="cursor-pointer"><i class="fa-solid fa-pen"></i> Edit</div>
                 </a>
                 <form method="POST" action="{{ route('announcements.destroy', $announcement->id) }}"
                     onsubmit="return confirm('Are you sure you want to delete this?');">
                     @csrf
 
                     @method('DELETE')
-                    <button class="text-red-500 cursor-pointer">Delete</button>
+                    <button class="text-red-500 cursor-pointer"> <i class="fa-solid fa-trash"></i> Delete</button>
                 </form>
             </div>
         @endif

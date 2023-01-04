@@ -9,6 +9,22 @@
 
     <!-- Fonts -->
     <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/e960eea922.js" crossorigin="anonymous"></script>
+
+    {{-- Custom css used across the app --}}
+    <style>
+        .default-icon {
+            filter: invert(47%) sepia(11%) saturate(478%) hue-rotate(182deg) brightness(91%) contrast(88%);
+        }
+
+        .blue-icon {
+            filter: invert(71%) sepia(79%) saturate(6093%) hue-rotate(170deg) brightness(105%) contrast(90%);
+        }
+
+        .orange-icon {
+            filter: invert(46%) sepia(64%) saturate(3888%) hue-rotate(356deg) brightness(93%) contrast(97%);
+        }
+    </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -21,7 +37,7 @@
 
     <script>
         function upVoteAnnouncement(id, element) {
-            fetchVote(id, 1, element)
+            fetchVote(id, 1, element);
         }
 
         function downVoteAnnouncement(id, element) {
@@ -41,19 +57,36 @@
                     body: data,
                 }).then(res => res.text())
                 .then((res) => {
+                    // const currentVal = element.parentElement.lastElementChild.innerText;
+                    // if (vote > 0) {
+                    //     element.firstElementChild.classList.remove('default-icon', 'orange-icon', 'blue-icon');
+                    //     if (currentVal < res) {
+                    //         console.log('Added up vote')
+                    //         element.firstElementChild.classList.add('blue-icon');
+                    //     } else {
+                    //         console.log('removed up vote')
+                    //     }
+                    // } else {
+                    //     if (currentVal > res) {
+                    //         console.log('Added down vote')
+                    //     } else {
+                    //         console.log('removed down vote')
+                    //     }
+                    // }
+
                     element.parentElement.lastElementChild.innerText = res;
                 });
         }
 
         function upVoteComment(id, element) {
-            fetchVote(id, 1, element)
+            fetchCommentVote(id, 1, element)
         }
 
         function downVoteComment(id, element) {
-            fetchVote(id, -1, element);
+            fetchCommentVote(id, -1, element);
         }
 
-        function fetchVote(id, vote, element) {
+        function fetchCommentVote(id, vote, element) {
             const form = new FormData();
             form.append('comment_id', id);
             form.append('vote_val', vote);

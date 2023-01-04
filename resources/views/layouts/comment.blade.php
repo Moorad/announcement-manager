@@ -12,23 +12,27 @@
     </div>
     <div class="flex px-5 pt-2 pb-2 rounded-md justify-between">
         <div class="flex gap-5">
-            <div>
-                <button onclick="upVoteComment({{ $comment->id }}, this)">Upvote</button>
-                <button onclick="downVoteComment({{ $comment->id }}, this)">Downvote</button>
+            <div class="flex items-center gap-2">
+                <button onclick="upVoteComment({{ $comment->id }}, this)">
+                    <img src="{{ asset('images/up_arrow.svg') }}" class="h-5 w-5 default-icon">
+                </button>
+                <button onclick="downVoteComment({{ $comment->id }}, this)">
+                    <img src="{{ asset('images/down_arrow.svg') }}" class="h-5 w-5 default-icon">
+                </button>
                 <span id='vote_value'>{{ $comment->vote_sum ?: 0 }}</span>
             </div>
         </div>
         @if ($user->id == $comment->user_id || $user->role == 'admin')
             <div class="flex gap-5">
                 <a href="{{ route('comments.edit', $comment->id) }}">
-                    <div class="cursor-pointer">Edit</div>
+                    <div class="cursor-pointer"><i class="fa-solid fa-pen"></i> Edit</div>
                 </a>
                 <form method='POST' action="{{ route('comments.destroy', $comment->id) }}"
                     onsubmit="return confirm('Are you sure you want to delete this?');">
                     @csrf
 
                     @method('DELETE')
-                    <button class="text-red-500 cursor-pointer">Delete</button>
+                    <button class="text-red-500 cursor-pointer"><i class="fa-solid fa-trash"></i> Delete</button>
                 </form>
             </div>
         @endif
