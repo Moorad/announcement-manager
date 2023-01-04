@@ -25,7 +25,7 @@ class GiphyAPI
 
 	public function search(string $query)
 	{
-		$limit = 10;
+		$limit = 15;
 		$offset = 0;
 		$rating = 'g'; // Age rating: G
 		$response = Http::get('https://api.giphy.com/v1/gifs/search?api_key=' . $this->api_key . '&q=' . $query . '&limit=' . $limit . '&offset=' . $offset . '&rating=' . $rating . '&lang=en');

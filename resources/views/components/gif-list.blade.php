@@ -1,8 +1,8 @@
 @isset($gifs)
-    <div class="flex justify-center gap-2 flex-wrap">
+    <div class="flex justify-evenly gap-2 flex-wrap">
         @foreach ($gifs as $gif)
-            <img src="{{ $gif->images->original->url }}" data-id="{{ $gif->id }}" class="h-24 cursor-pointer"
-                onclick="selectGif(this);">
+            <img src="{{ $gif->images->original->url }}" data-id="{{ $gif->id }}"
+                class="h-24 cursor-pointer hover:outline hover:outline-3 hover:outline-blue-500" onclick="selectGif(this);">
         @endforeach
     </div>
 
