@@ -40,5 +40,9 @@
                 @include('layouts.comment', ['comment' => $comment])
             </div>
         @endforeach
+
+        @if ($comments)
+            {{ $comments->withQueryString()->links() }}
+        @endif
     </div>
 @endsection

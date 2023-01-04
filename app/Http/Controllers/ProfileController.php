@@ -31,12 +31,12 @@ class ProfileController extends Controller
 				$join->on('votes.votable_id', '=', 'announcements.id');
 			})
 			->select('announcements.*', 'users.name as user_name', 'users.role as user_role', 'votes.vote_sum')
-			->where('announcements.user_id', $id)->get();
+			->where('announcements.user_id', $id)->paginate(10, ['*'], 'announcementPage');
 
 		$comments = Comment::where('comments.user_id', $user->id)
 			->join('users', 'users.id', 'comments.user_id')
 			->join('announcements', 'announcements.id', 'comments.announcement_id')
-			->select('comments.*', 'users.name as user_name', 'users.role as user_role', 'announcements.title as announcement_title')->get();
+			->select('comments.*', 'users.name as user_name', 'users.role as user_role', 'announcements.title as announcement_title')->paginate(10, ['*'], 'commentPage');
 
 		$in_org = UserOrganisation::where('user_id', $id)->first();
 		$owns_org = Organisation::where('admin_id', $id)->first();

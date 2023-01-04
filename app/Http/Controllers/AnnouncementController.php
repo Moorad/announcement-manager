@@ -103,7 +103,7 @@ class AnnouncementController extends Controller
 
 		$comments = Comment::where('announcement_id', $id)
 			->join('users', 'users.id', 'comments.user_id')
-			->select('comments.*', 'users.name as user_name', 'users.role as user_role')->get();
+			->select('comments.*', 'users.name as user_name', 'users.role as user_role')->orderBy('updated_at', 'desc')->get();
 
 		return view('announcements.show', ['user' => Auth::user(), 'announcement' => $announcement, 'comments' => $comments]);
 	}

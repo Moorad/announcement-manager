@@ -49,7 +49,7 @@ class CommentController extends Controller
 
 		$comments = Comment::where('announcement_id', $request->announcement_id)
 			->join('users', 'users.id', 'comments.user_id')
-			->select('comments.*', 'users.name as user_name', 'users.role as user_role')->get();
+			->select('comments.*', 'users.name as user_name', 'users.role as user_role')->orderBy('updated_at', 'desc')->get();
 
 
 		$userCommented = User::where('id', $request->user_id)->first();

@@ -8,6 +8,6 @@
     @endforeach
 
     @if ($announcements)
-        {{ $announcements->links() }}
+        {{ $announcements->withQueryString()->links() }}
     @endif
 </div>
