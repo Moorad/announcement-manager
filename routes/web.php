@@ -3,6 +3,7 @@
 use App\Http\Controllers\OrganisationController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\GiphyController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,9 @@ Route::middleware(['auth', 'has_org'])->group(function () {
 	Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 	Route::get('/profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
+
+	Route::get('/giphy/trending', [GiphyController::class, 'trending'])->name('giphy.trending');
+	Route::get('/giphy/search', [GiphyController::class, 'search'])->name('giphy.search');
 });
 
 
