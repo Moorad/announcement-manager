@@ -1,6 +1,12 @@
 @extends('layouts.main')
 
 @section('content')
+    @if ($errors->any())
+        @include('components.alert', [
+            'content' => $errors->first(),
+            'variant' => 'error',
+        ])
+    @endif
     <form method="POST" action="{{ route('announcements.store') }}" class="flex flex-col gap-10" enctype="multipart/form-data">
         @csrf
 

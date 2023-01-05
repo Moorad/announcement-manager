@@ -18,7 +18,7 @@ return new class extends Migration
 			$table->bigInteger('user_id')->unsigned();
 			$table->bigInteger('org_id')->unsigned();
 			$table->string('title');
-			$table->string('text');
+			$table->string('text', 750);
 			$table->string('attached_image')->nullable();
 			$table->boolean('edited')->default(false);
 			$table->enum('priority', ['low', 'normal', 'high'])->default('low');

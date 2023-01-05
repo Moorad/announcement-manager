@@ -48,6 +48,11 @@ class AnnouncementController extends Controller
 	 */
 	public function store(Request $request)
 	{
+		$validate = $request->validate([
+			'announcement_title' =>  ['required', 'max:255'],
+			'announcement_text' =>  ['required', 'max:750']
+
+		]);
 		$announcement = new Announcement;
 		$announcement->user_id = Auth::user()->id;
 		$announcement->org_id = $request->attributes->get('org_data')->id;
