@@ -51,6 +51,8 @@ class UserController extends Controller
 		} else {
 			$member->delete();
 
+			User::where('id', $user_id)->update(['role' => 'member']);
+
 			$user->notify(new RemovedUserFromOrg);
 			return 'Member ID ' . $user_id . ' has been removed from the organisation';
 		}
