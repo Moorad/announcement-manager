@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
 		//     'email' => 'test@example.com',
 		// ]);
 
+		$this->call(TagTableSeeder::class);
 		$this->call(UserTableSeeder::class);
 		User::factory(100)->create();
 

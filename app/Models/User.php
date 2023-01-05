@@ -47,4 +47,9 @@ class User extends Authenticatable
 	{
 		return $this->hasOne(Organisation::class);
 	}
+
+	public function user_organisation()
+	{
+		return $this->belongTo(UserOrganisation::class);
+	}
 }

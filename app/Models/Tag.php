@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Organisation extends Model
+class Tag extends Model
 {
 	use HasFactory;
 
-	public function user()
+	public function announcements()
 	{
-		return $this->belongsTo(User::class);
+		return $this->belongsToMany(Announcement::class);
 	}
 }

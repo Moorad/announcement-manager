@@ -13,4 +13,9 @@ class Announcement extends Model
 	{
 		return $this->morphMany(Vote::class, 'votable');
 	}
+
+	public function tags()
+	{
+		return $this->belongsToMany(Tag::class);
+	}
 }
