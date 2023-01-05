@@ -28,7 +28,7 @@
 						file:rounded-md file:border-0
 						file:text-base file:font-medium
 						file:bg-blue-500 file:text-white
-						hover:file:cursor-pointer' />
+						hover:file:cursor-pointer hover:file:bg-blue-400' />
                     <div class='text-gray-500'>SVG, PNG, JPG, GIF or WebP.</div>
                 </div>
 
@@ -36,7 +36,7 @@
                     <input type="text" value="" name="giphy_gif_src" id='giphy_gif_src' class="hidden">
                     <x-input-label for="giphy_image" :value="__('Or use Giphy')" />
                     <div class="flex items-center gap 5">
-                        <div class="flex gap-2 bg-black w-fit h-fit text-white px-4 py-2 rounded-md cursor-pointer"
+                        <div class="flex gap-2 bg-black w-fit h-fit text-white px-4 py-2 rounded-md cursor-pointer hover:bg-gray-900"
                             onclick="toggleGiphySection()">
                             <img src="https://cdn.worldvectorlogo.com/logos/giphy-logo-1.svg" alt="" class="h-5">
                             <div>Giphy</div>
@@ -81,7 +81,9 @@
         </div>
 
         <div class="self-end">
-            <button class='bg-blue-500 text-white px-4 py-2 rounded-md text-lg' type='submit'>Submit</button>
+            @include('components.button', [
+                'text' => 'Submit',
+            ])
         </div>
     </form>
 

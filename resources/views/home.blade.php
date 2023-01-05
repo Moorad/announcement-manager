@@ -4,16 +4,16 @@
     <div class='flex justify-center gap-3'>
         @if ($user->role == 'admin')
             <a href="{{ route('organisations.index') }}">
-                <button class='bg-blue-500 text-white px-4 py-2 rounded-md text-lg'>View All Organisation</button>
+                @include('components.button', ['text' => 'View All Organisation'])
             </a>
 
             @if ($owns_org == true)
                 <a href="{{ route('organisations.show', $org_data->id) }}">
-                    <button class='bg-blue-500 text-white px-4 py-2 rounded-md text-lg'>Manage Organisation Users</button>
+                    @include('components.button', ['text' => 'Manage Organisation Users'])
                 </a>
             @else
                 <a href="{{ route('organisations.create') }}">
-                    <button class='bg-blue-500 text-white px-4 py-2 rounded-md text-lg'>Create Organisation</button>
+                    @include('components.button', ['text' => 'Create Organisation'])
                 </a>
             @endif
         @endif
@@ -21,11 +21,14 @@
         @if ($user->role == 'announcer' || $user->role == 'admin')
             @if ($in_org || $owns_org)
                 <a href="{{ route('announcements.create') }}">
-                    <button class='bg-blue-500 text-white px-4 py-2 rounded-md text-lg'>Create Announcement</button>
+                    @include('components.button', ['text' => 'Create Announcement'])
                 </a>
             @else
-                <button class='bg-blue-500 text-white px-4 py-2 rounded-md text-lg'
-                    title="You must be part of an organisation first." disabled>Create Announcement</button>
+                @include('components.button', [
+                    'text' => 'Create Announcement',
+                    'disabled' => true,
+                    'other' => 'title="You must be part of an organisation first."',
+                ])
             @endif
         @endif
     </div>
@@ -52,8 +55,6 @@
             'content' =>
                 "You do not own an organisation. Click on <span class='font-bold'> Create Organisation </span> to get started.",
         ])
-    @else
-        Yes org
     @endif
 
     @include('layouts.announcements', [

@@ -37,7 +37,7 @@ class OrganisationController extends Controller
 	public function create(Request $request)
 	{
 		if ($request->attributes->get('owns_org')) {
-			return redirect()->to(route('organisations.users'));
+			return redirect()->to(route('organisations.show', $request->attributes->get('org_data')->id));
 		}
 
 		return view('organisations.create', ['user' => Auth::user()]);

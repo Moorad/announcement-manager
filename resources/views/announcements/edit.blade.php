@@ -54,7 +54,9 @@
         </div>
         </div>
         <div class="self-end">
-            <button class='bg-blue-500 text-white px-4 py-2 rounded-md text-lg' type='submit'>Submit</button>
+            @include('components.button', [
+                'text' => 'Submit',
+            ])
         </div>
     </form>
 @endsection

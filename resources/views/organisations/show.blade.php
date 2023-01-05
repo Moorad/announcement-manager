@@ -9,7 +9,7 @@
 
         <div>
             <div class='text-sm '>Number of members: </div>
-            <div class='text-2xl font-bold'><span id='member_count_top'>{{ $member_count }}</span> members</div>
+            <div class='text-2xl font-bold'><span id='member_count'>{{ $member_count }}</span> members</div>
         </div>
 
         <div>
@@ -31,9 +31,9 @@
                             autofocus />
                     </div>
                     <div class="flex items-end">
-                        <button class="bg-blue-500 text-white h-10 px-4 rounded-md">
-                            Search
-                        </button>
+                        @include('components.button', [
+                            'text' => 'Search',
+                        ])
                     </div>
             </form>
         </div>
@@ -44,12 +44,11 @@
         <div>{{ $users->withQueryString()->links() }}</div>
         <div id='feedback' class='text-center'></div>
 
-
-        <div>Number of people selected: <span id='member_count_bottom'>{{ $member_count }}</span></div>
-
         <div>
             <a href="{{ route('home') }}">
-                <button class="bg-blue-500 text-white h-10 px-4 rounded-md">Back</button>
+                @include('components.button', [
+                    'text' => 'Back',
+                ])
             </a>
         </div>
     </div>
@@ -57,8 +56,7 @@
 
     <script>
         const orgId = '<?php echo $org_data->id; ?>'
-        const memberCountBot = document.querySelector('#member_count_bottom');
-        const memberCountTop = document.querySelector('#member_count_top');
+        const memberCount = document.querySelector('#member_count');
 
         function updateMember(element) {
             const isMemberChecked = element.checked;
@@ -70,14 +68,12 @@
                 console.log(orgId, userId);
                 fetchUpdateMember(userId, orgId);
                 announcerCheckbox.disabled = false;
-                memberCountBot.innerText = Number(memberCountBot.innerText) + 1;
-                memberCountTop.innerText = Number(memberCountTop.innerText) + 1
+                memberCount.innerText = Number(memberCount.innerText) + 1
             } else {
                 fetchUpdateMember(userId, orgId);
                 announcerCheckbox.disabled = true;
                 announcerCheckbox.checked = false;
-                memberCountBot.innerText = Number(memberCountBot.innerText) - 1;
-                memberCountTop.innerText = Number(memberCountTop.innerText) - 1
+                memberCount.innerText = Number(memberCount.innerText) - 1
             }
         }
 

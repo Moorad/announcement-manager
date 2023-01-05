@@ -16,7 +16,7 @@
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <a :href="route('logout')" :href="route('logout')">
-                    <button class="bg-gray-500 py-1 px-4 rounded-md"
+                    <button class="bg-gray-500 py-1 px-4 rounded-md hover:bg-gray-400"
                         onclick="event.preventDefault();
                                         this.closest('form').submit();">{{ __('Log out') }}</button>
                 </a>

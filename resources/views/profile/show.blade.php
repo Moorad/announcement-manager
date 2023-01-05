@@ -32,9 +32,13 @@
 
     <div class='text-3xl font-bold my-5'>Announcements</div>
 
-    @include('layouts.announcements', ['empty_message' => 'The user has not shared any announcements'])
+    @include('layouts.announcements', ['empty_message' => 'The user has no announcements'])
 
     <div class='text-3xl font-bold my-5'>Comments</div>
+
+    @if (count($comments) == 0)
+        <div class="text-center text-gray-400">There user has no comments</div>
+    @endif
 
     <div class='mx-auto w-full max-w-[40rem] flex flex-col gap-5 my-5'>
         @foreach ($comments as $comment)

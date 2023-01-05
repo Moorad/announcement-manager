@@ -38,7 +38,7 @@
                 <span id='vote_value'>{{ $announcement->vote_sum ?: 0 }}</span>
             </div>
             <a href="{{ route('announcements.show', $announcement->id) }}">
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 hover:bg-gray-500 hover:bg-opacity-10 px-2 py-1 rounded-md">
 
                     <i class="fa-solid fa-comment text-lg text-gray-500"></i>
                     @isset($comments)
@@ -52,14 +52,17 @@
         @if ($user->id == $announcement->user_id || $user->role == 'admin')
             <div class="flex gap-5">
                 <a href="{{ route('announcements.edit', $announcement->id) }}">
-                    <div class="cursor-pointer"><i class="fa-solid fa-pen"></i> Edit</div>
+                    <div class="cursor-pointer hover:bg-black hover:bg-opacity-10 px-2 py-1 rounded-md"><i
+                            class="fa-solid fa-pen"></i> Edit</div>
                 </a>
                 <form method="POST" action="{{ route('announcements.destroy', $announcement->id) }}"
                     onsubmit="return confirm('Are you sure you want to delete this?');">
                     @csrf
 
                     @method('DELETE')
-                    <button class="text-red-500 cursor-pointer"> <i class="fa-solid fa-trash"></i> Delete</button>
+                    <button
+                        class="text-red-500 cursor-pointer hover:bg-red-700 hover:bg-opacity-10 px-2 py-1 rounded-md">
+                        <i class="fa-solid fa-trash"></i> Delete</button>
                 </form>
             </div>
         @endif
