@@ -65,6 +65,19 @@
                 </div>
             </div>
             <div>
+                <x-input-label for="announcement_tags[]" :value="__('Announcement Tags')" />
+                <fieldset>
+                    <div class="grid grid-cols-6 gap-2 mt-3">
+                        @foreach ($tags as $tag)
+                            <div>
+                                <input type="checkbox" name="announcement_tags[]" value="{{ $tag->id }}">
+                                <label for="announcement_tags[]">{{ $tag->name }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                </fieldset>
+            </div>
+            <div>
                 <x-input-label for="announcement_priority" :value="__('Announcement Priority')" />
 
                 <input type="radio" id="high" name="announcement_priority" value="high">

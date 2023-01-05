@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Announcement;
 use App\Models\Vote;
 use App\Models\Comment;
+use App\Models\Tag;
+use App\Models\TagAnnouncement;
 use App\Models\User;
 use App\Notifications\AnnouncementCreated;
 use App\Notifications\AnnouncementInteraction;
@@ -37,7 +39,8 @@ class AnnouncementController extends Controller
 	 */
 	public function create()
 	{
-		return view('announcements.create', ['user' => Auth::user()]);
+		$tags = Tag::all();
+		return view('announcements.create', ['user' => Auth::user(), 'tags' => $tags]);
 	}
 
 	/**
@@ -76,6 +79,14 @@ class AnnouncementController extends Controller
 
 		$announcement->save();
 
+		if ($request->announcement_tags) {
+			foreach ($request->announcement_tags as $tag_id) {
+				$tag = new TagAnnouncement;
+				$tag->tag_id = $tag_id;
+				$tag->announcement_id = $announcement->id;
+				$tag->save();
+			}
+		}
 
 		if ($request->announcement_priority == 'high' || $request->announcement_priority == 'normal') {
 			$users = User::join('user_organisations', 'users.id', 'user_organisations.user_id')
@@ -115,7 +126,8 @@ class AnnouncementController extends Controller
 			->join('users', 'users.id', 'comments.user_id')
 			->select('comments.*', 'users.name as user_name', 'users.role as user_role')->orderBy('updated_at', 'desc')->get();
 
-		return view('announcements.show', ['user' => Auth::user(), 'announcement' => $announcement, 'comments' => $comments]);
+		$tags = TagAnnouncement::where('announcement_id', $id)->join('tags', 'tags.id', 'tag_announcements.tag_id')->get();
+		return view('announcements.show', ['user' => Auth::user(), 'announcement' => $announcement, 'comments' => $comments, "tags" => $tags]);
 	}
 
 	/**

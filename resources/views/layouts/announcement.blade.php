@@ -20,7 +20,13 @@
                     class='rounded-lg mx-auto w-3/4 my-4'>
             </div>
         @endif
-
+        @isset($tags)
+            <div class="flex gap-2 mt-3 mb-1">
+                @foreach ($tags as $tag)
+                    <div class="bg-blue-500 px-2 rounded-md text-gray-100">{{ $tag->name }}</div>
+                @endforeach
+            </div>
+        @endisset
         @if ($announcement->edited)
             <div class="text-sm text-gray-400 mt-5">Edited on
                 {{ $announcement->updated_at }}</div>
