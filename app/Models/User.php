@@ -52,4 +52,9 @@ class User extends Authenticatable
 	{
 		return $this->belongTo(UserOrganisation::class);
 	}
+
+	public function announcements()
+	{
+		return $this->hasMany(Announcement::class);
+	}
 }

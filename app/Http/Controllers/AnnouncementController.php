@@ -122,9 +122,14 @@ class AnnouncementController extends Controller
 			return abort(404);
 		}
 
+		$commentVotes = Vote::whereHasMorph('votable', [Comment::class])->selectRaw('votable_id, SUM(vote_val) as vote_sum')->groupBy('votable_id');
+
 		$comments = Comment::where('announcement_id', $id)
 			->join('users', 'users.id', 'comments.user_id')
-			->select('comments.*', 'users.name as user_name', 'users.role as user_role')->orderBy('updated_at', 'desc')->get();
+			->leftJoinSub($commentVotes, 'votes', function ($join) {
+				$join->on('votes.votable_id', '=', 'comments.id');
+			})
+			->select('comments.*', 'users.name as user_name', 'users.role as user_role', 'votes.vote_sum')->orderBy('updated_at', 'desc')->get();
 
 		$tags = TagAnnouncement::where('announcement_id', $id)->join('tags', 'tags.id', 'tag_announcements.tag_id')->get();
 		return view('announcements.show', ['user' => Auth::user(), 'announcement' => $announcement, 'comments' => $comments, "tags" => $tags]);

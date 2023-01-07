@@ -27,8 +27,7 @@
                 <div class="flex gap-5">
                     <div class='flex-grow'>
                         <x-input-label for="search" :value="__('Search for user')" />
-                        <x-text-input id="search" class="block mt-1 w-full" type="text" name="search" required
-                            autofocus />
+                        <x-text-input id="search" class="block mt-1 w-full" type="text" name="search" autofocus />
                     </div>
                     <div class="flex items-end">
                         @include('components.button', [
