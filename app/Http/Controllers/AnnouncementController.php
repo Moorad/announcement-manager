@@ -49,7 +49,7 @@ class AnnouncementController extends Controller
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(Request $request)
+	public function store(Request $request, GiphyAPI $GiphyService)
 	{
 		$validate = $request->validate([
 			'announcement_title' =>  ['required', 'max:255'],
@@ -72,7 +72,7 @@ class AnnouncementController extends Controller
 
 			$announcement->attached_image = $request->file('announcement_image')->hashName();
 		} else if ($request->giphy_gif_src) {
-			$hashed_name = app()->make(GiphyAPI::class)->saveGif($request->giphy_gif_src);
+			$hashed_name = $GiphyService->saveGif($request->giphy_gif_src);
 
 			$announcement->attached_image = $hashed_name;
 		}

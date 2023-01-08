@@ -7,19 +7,19 @@ use Illuminate\Http\Request;
 
 class GiphyController extends Controller
 {
-	public function trending()
+	public function trending(GiphyAPI $GiphyService)
 	{
-		$gifs = app()->make(GiphyAPI::class)->trending();
+		$gifs = $GiphyService->trending();
 
 		return view('components.gif-list', ['gifs' => $gifs->data]);
 	}
 
-	public function search(Request $request)
+	public function search(Request $request, GiphyAPI $GiphyService)
 	{
 		if ($request->query('q')) {
-			$gifs = app()->make(GiphyAPI::class)->search($request->query('q'));
+			$gifs = $GiphyService->search($request->query('q'));
 		} else {
-			$gifs = app()->make(GiphyAPI::class)->trending();
+			$gifs = $GiphyService->trending();
 		}
 
 		return view('components.gif-list', ['gifs' => $gifs->data]);

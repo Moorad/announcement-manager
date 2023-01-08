@@ -8,27 +8,27 @@ use Illuminate\Support\Facades\Storage;
 class GiphyAPI
 {
 	private $api_key;
+	private $limit;
+	private $rating;
 
-	public function __construct()
+	public function __construct($api_key, $limit, $age_rating)
 	{
-		$this->api_key = env('GIPHY_API_KEY');
+		$this->api_key = $api_key;
+		$this->limit = $limit;
+		$this->rating = $age_rating;
 	}
 
 	public function trending()
 	{
-		$limit = 15;
-		$rating = 'g'; // Age rating: G
-		$response = Http::get('https://api.giphy.com/v1/gifs/trending?api_key=' . $this->api_key . '&limit=' . $limit . '&rating=' . $rating);
+
+		$response = Http::get('https://api.giphy.com/v1/gifs/trending?api_key=' . $this->api_key . '&limit=' . $this->limit . '&rating=' . $this->rating);
 
 		return json_decode($response->body());
 	}
 
 	public function search(string $query)
 	{
-		$limit = 15;
-		$offset = 0;
-		$rating = 'g'; // Age rating: G
-		$response = Http::get('https://api.giphy.com/v1/gifs/search?api_key=' . $this->api_key . '&q=' . $query . '&limit=' . $limit . '&offset=' . $offset . '&rating=' . $rating . '&lang=en');
+		$response = Http::get('https://api.giphy.com/v1/gifs/search?api_key=' . $this->api_key . '&q=' . $query . '&limit=' . $this->limit . '&offset=0&rating=' . $this->rating . '&lang=en');
 
 		return json_decode($response->body());
 	}
